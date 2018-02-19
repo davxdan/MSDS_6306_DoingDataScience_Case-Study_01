@@ -13,12 +13,47 @@ Load Libraries
 ```{r, eval=FALSE}
 require(ggplot2)
 require(readr)
+require(repmis)
+require(RCurl)
 ```
 ## Environment Information
 ```{r tidy=TRUE}
 sessionInfo()
 ```
+## Brewery Data Analysis
 
+[Link to the Github Repository Associated with this Study](https://github.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01)
+
+The purpose of this is to present findings from blah blah ....
+The questions asked are listed below with data analysis methods and answers.  
+
+### The Data Provided
+Data was provided in the form of w .csv files which are included in the repository path...
+
+#### Data Issues
+Issues have been identified in the data provided. The OpenRefine tool was used to analyze issues. Actions taken with the data issues are listed:
+*Line 73 Missing 7 elements
+*Line 2410 "Your My Boy" missing beer ID
+
+```{r, tidy=TRUE}
+UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv"
+DataURL<- getURL(UrlAddress)
+RawBeerData<-read.table(textConnection(DataURL),sep=",",header=TRUE)
+```
+
+###1. How many breweries are present in each state?
+
+###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
+
+###3. Report the number of NA’s in each column.
+
+###4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare.
+
+###5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
+
+###6. Summary statistics for the ABV variable.
+
+###7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer.
 
 
 
