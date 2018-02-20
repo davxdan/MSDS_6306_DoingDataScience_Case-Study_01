@@ -2,3 +2,4 @@
 Case Study 1 from Doing Data Science Class
 
 hopefully this works - emil
+stuff
