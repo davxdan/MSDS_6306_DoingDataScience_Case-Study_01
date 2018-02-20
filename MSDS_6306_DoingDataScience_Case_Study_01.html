@@ -128,7 +128,9 @@ $(document).ready(function () {
 
 <p>Load Libraries</p>
 <pre class="r"><code>require(ggplot2)
-require(readr)</code></pre>
+require(readr)
+require(repmis)
+require(RCurl)</code></pre>
 <div id="environment-information" class="section level2">
 <h2>Environment Information</h2>
 <pre class="r"><code>sessionInfo()</code></pre>
@@ -149,16 +151,26 @@ require(readr)</code></pre>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] compiler_3.4.3  backports_1.1.2 magrittr_1.5    rprojroot_1.3-2
-##  [5] formatR_1.5     tools_3.4.3     htmltools_0.3.6 yaml_2.1.16    
-##  [9] Rcpp_0.12.14    stringi_1.1.6   rmarkdown_1.8   knitr_1.18     
-## [13] stringr_1.2.0   digest_0.6.13   evaluate_0.10.1</code></pre>
+##  [1] compiler_3.4.3  backports_1.1.2 magrittr_1.5    rprojroot_1.3-1
+##  [5] tools_3.4.3     htmltools_0.3.6 yaml_2.1.16     Rcpp_0.12.14   
+##  [9] stringi_1.1.6   rmarkdown_1.8   knitr_1.17      stringr_1.2.0  
+## [13] digest_0.6.13   evaluate_0.10.1</code></pre>
 </div>
 <div id="brewery-data-analysis" class="section level2">
 <h2>Brewery Data Analysis</h2>
 <p><a href="https://github.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01">Link to the Github Repository Associated with this Study</a></p>
-<p>The purpose of this is to present findings from blah blah …. Data was provided in the form of w .csv files which are included in the repository path /Input/RawDataFiles.</p>
-<p>The questions asked are listed below with data analysis methods and answers.</p>
+<p>The purpose of this is to present findings from blah blah …. The questions asked are listed below with data analysis methods and answers.</p>
+<div id="the-data-provided" class="section level3">
+<h3>The Data Provided</h3>
+<p>Data was provided in the form of w .csv files which are included in the repository path…</p>
+<div id="data-issues" class="section level4">
+<h4>Data Issues</h4>
+<p>Issues have been identified in the data provided. The OpenRefine tool was used to analyze issues. Actions taken with the data issues are listed: <em>Line 73 Missing 7 elements </em>Line 2410 “Your My Boy” missing beer ID</p>
+<pre class="r"><code>#UrlAddress&lt;- &quot;https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv&quot;
+#DataURL&lt;- getURL(UrlAddress)
+#RawBeerData&lt;-read.table(textConnection(DataURL),sep=&quot;,&quot;,header=TRUE)</code></pre>
+</div>
+</div>
 <div id="how-many-breweries-are-present-in-each-state" class="section level3">
 <h3>1. How many breweries are present in each state?</h3>
 </div>
@@ -188,8 +200,8 @@ require(readr)</code></pre>
 <h1>Header 1</h1>
 <div id="header-2" class="section level2">
 <h2>Header 2</h2>
-<div id="header-3" class="section level3">
-<h3>Header 3</h3>
+<div id="this-is-a-header" class="section level3">
+<h3>THis is a header</h3>
 <div id="header-4" class="section level4">
 <h4>Header 4</h4>
 <div id="header-5" class="section level5">
