@@ -9,7 +9,6 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Daniel Davieau" />
 
 <meta name="date" content="2018-02-19" />
 
@@ -120,7 +119,6 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Case Study_01_BeerDataAnalysis</h1>
-<h4 class="author"><em>Daniel Davieau</em></h4>
 <h4 class="date"><em>February 19, 2018</em></h4>
 
 </div>
@@ -132,10 +130,6 @@ library(readr)
 library(repmis)
 library(RCurl)</code></pre>
 <pre><code>## Loading required package: bitops</code></pre>
-<pre class="r"><code>require(ggplot2)
-require(readr)
-require(repmis)
-require(RCurl)</code></pre>
 <div id="environment-information" class="section level2">
 <h2>Environment Information</h2>
 <pre class="r"><code>sessionInfo()</code></pre>
@@ -156,21 +150,22 @@ require(RCurl)</code></pre>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] RCurl_1.95-4.8 bitops_1.0-6   repmis_0.5     readr_1.1.1   
-## [5] ggplot2_2.2.1 
+## [1] RCurl_1.95-4.10 bitops_1.0-6    repmis_0.5      readr_1.1.1    
+## [5] ggplot2_2.2.1  
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.14        knitr_1.17          magrittr_1.5       
-##  [4] hms_0.4.0           munsell_0.4.3       R.cache_0.12.0     
+##  [1] Rcpp_0.12.14        knitr_1.18          magrittr_1.5       
+##  [4] hms_0.4.1           munsell_0.4.3       R.cache_0.13.0     
 ##  [7] colorspace_1.3-2    R6_2.2.2            rlang_0.1.6        
 ## [10] httr_1.3.1          stringr_1.2.0       plyr_1.8.4         
 ## [13] tools_3.4.3         grid_3.4.3          data.table_1.10.4-3
 ## [16] gtable_0.2.0        R.oo_1.21.0         htmltools_0.3.6    
-## [19] yaml_2.1.16         lazyeval_0.2.1      rprojroot_1.3-1    
-## [22] digest_0.6.13       tibble_1.4.2        R.utils_2.6.0      
-## [25] evaluate_0.10.1     rmarkdown_1.8       stringi_1.1.6      
-## [28] compiler_3.4.3      pillar_1.1.0        R.methodsS3_1.7.1  
-## [31] scales_0.5.0        backports_1.1.2     pkgconfig_2.0.1</code></pre>
+## [19] yaml_2.1.16         lazyeval_0.2.1      rprojroot_1.3-2    
+## [22] digest_0.6.13       tibble_1.4.1        formatR_1.5        
+## [25] R.utils_2.6.0       evaluate_0.10.1     rmarkdown_1.8      
+## [28] stringi_1.1.6       compiler_3.4.3      pillar_1.0.1       
+## [31] R.methodsS3_1.7.1   scales_0.5.0        backports_1.1.2    
+## [34] pkgconfig_2.0.1</code></pre>
 </div>
 <div id="brewery-data-analysis" class="section level2">
 <h2>Brewery Data Analysis</h2>
@@ -179,17 +174,31 @@ require(RCurl)</code></pre>
 <div id="the-data-provided" class="section level3">
 <h3>The Data Provided</h3>
 <p>Data was provided in the form of w .csv files which are included in the repository path…</p>
-<div id="data-issues" class="section level4">
-<h4>Data Issues</h4>
-<p>Issues have been identified in the data provided. The OpenRefine tool was used to analyze issues. Actions taken with the data issues are listed: <em>Line 73 Missing 7 elements </em>Line 2410 “Your My Boy” missing beer ID</p>
-<pre class="r"><code>UrlAddress&lt;- &quot;https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv&quot;
-DataURL&lt;- getURL(UrlAddress)
-RawBeerData&lt;-read.table(textConnection(DataURL),fill = TRUE, sep=&quot;,&quot;, quote = &quot;&quot;,header=TRUE)</code></pre>
-<p>read.table wants to return a data.frame, which must have an element in each column. Therefore R expects each row to have the same number of elements and it doesn’t fill in empty spaces by default. Try read.table(“/PathTo/file.csv” , fill = TRUE ) to fill in the blanks.</p>
-</div>
+<pre class="r"><code># Load Beers.csv into a dataframe
+UrlAddress &lt;- &quot;https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv&quot;
+DataURL &lt;- getURL(UrlAddress)
+RawBeerData &lt;- read.table(textConnection(DataURL), fill = TRUE, sep = &quot;,&quot;, quote = &quot;&quot;, 
+    header = TRUE)
+
+# Load Breweries.csv
+UrlAddress &lt;- &quot;https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Breweries.csv&quot;
+DataURL &lt;- getURL(UrlAddress)
+RawBreweryData &lt;- read.table(textConnection(DataURL), fill = TRUE, sep = &quot;,&quot;, 
+    quote = &quot;&quot;, header = TRUE)
+
+
+print(RawBreweryData[c(111, 112), ])  #Identified erroneous record</code></pre>
+<pre><code>##     Brew_ID                     Name   City State
+## 111      NH                                      
+## 112     111 Renegade Brewing Company Denver    CO</code></pre>
+<pre class="r"><code># RawBreweryData$Brew_ID[RawBreweryData$ == ''Woodstock Inn']&lt;-'South Korea'
+# #For numbers do same except no quotes '' y2016 &lt;- subset(x =
+# RawBreweryData, Brew_ID != 110,111)
+RawBreweryData &lt;- RawBreweryData[-c(111, 112), ]</code></pre>
 </div>
 <div id="how-many-breweries-are-present-in-each-state" class="section level3">
 <h3>1. How many breweries are present in each state?</h3>
+<pre class="r"><code>CountBreweriesByState &lt;- table(RawBreweryData$State)</code></pre>
 </div>
 <div id="merge-beer-data-with-the-breweries-data.-print-the-rst-6-observations-and-the-last-six-observations-to-check-the-merged-le." class="section level3">
 <h3>2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.</h3>

@@ -15,11 +15,6 @@ library(ggplot2)
 library(readr)
 library(repmis)
 library(RCurl)
-
-require(ggplot2)
-require(readr)
-require(repmis)
-require(RCurl)
 ```
 ## Environment Information
 ```{r tidy=TRUE}
@@ -35,21 +30,31 @@ The questions asked are listed below with data analysis methods and answers.
 ### The Data Provided
 Data was provided in the form of w .csv files which are included in the repository path...
 
-#### Data Issues
-Issues have been identified in the data provided. The OpenRefine tool was used to analyze issues. Actions taken with the data issues are listed:
-*Line 73 Missing 7 elements
-*Line 2410 "Your My Boy" missing beer ID
+
 
 ```{r, tidy=TRUE}
+#Load Beers.csv into a dataframe
 UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv"
 DataURL<- getURL(UrlAddress)
 RawBeerData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = "",header=TRUE)
 
+#Load Breweries.csv
+UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Breweries.csv"
+DataURL<- getURL(UrlAddress)
+RawBreweryData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = "",header=TRUE)
+
+
+print(RawBreweryData[c(111, 112),]) #Identified erroneous record
+#RawBreweryData$Brew_ID[RawBreweryData$ == ""Woodstock Inn"]<-"South Korea" #For numbers do same except no quotes ""
+#y2016 <- subset(x = RawBreweryData, Brew_ID != 110,111)
+RawBreweryData<-RawBreweryData[-c(111, 112),]
 ```
-read.table wants to return a data.frame, which must have an element in each column. Therefore R expects each row to have the same number of elements and it doesn't fill in empty spaces by default. Try read.table("/PathTo/file.csv" , fill = TRUE ) to fill in the blanks.
-
 ###1. How many breweries are present in each state?
+```{r, tidy=TRUE}
 
+CountBreweriesByState<-table(RawBreweryData$State)
+
+```
 ###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
 
 ###3. Report the number of NA’s in each column.
