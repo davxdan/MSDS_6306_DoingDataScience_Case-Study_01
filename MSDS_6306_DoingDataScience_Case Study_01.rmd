@@ -37,17 +37,22 @@ Data was provided in the form of w .csv files which are included in the reposito
 UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv"
 DataURL<- getURL(UrlAddress)
 RawBeerData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = "",header=TRUE)
+#RawBeerData<-read.table(textConnection("Beers.csv"),fill = TRUE, sep=",", quote = "",header=TRUE)
 
 #Load Breweries.csv
 UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Breweries.csv"
 DataURL<- getURL(UrlAddress)
 RawBreweryData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = "",header=TRUE)
+#RawBreweryData<-read.table(textConnection("Breweries.csv"),fill = TRUE, sep=",", quote = "",header=TRUE)
 
+RawBreweryData[c(110, 111, 112),] #Identified erroneous record
 
-print(RawBreweryData[c(111, 112),]) #Identified erroneous record
-#RawBreweryData$Brew_ID[RawBreweryData$ == ""Woodstock Inn"]<-"South Korea" #For numbers do same except no quotes ""
-#y2016 <- subset(x = RawBreweryData, Brew_ID != 110,111)
-RawBreweryData<-RawBreweryData[-c(111, 112),]
+#Fix and reinsert Renegade Brewing Co. and Woodstock Inn
+FixedRecords<-rbind(c("110","Woodstock Inn Station & Brewery","North Woodstock","NH" ),c("111","Renegade Brewing Company","Denver", "CO"))
+colnames(FixedRecords)<-colnames(RawBreweryData)
+
+#Regenerate the Data 
+Stage1BreweryData<-data.frame(rbind(RawBreweryData[-c(110,111,112),],FixedRecords))
 ```
 ###1. How many breweries are present in each state?
 ```{r, tidy=TRUE}
