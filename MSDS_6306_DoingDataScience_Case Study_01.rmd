@@ -15,11 +15,6 @@ library(ggplot2)
 library(readr)
 library(repmis)
 library(RCurl)
-
-require(ggplot2)
-require(readr)
-require(repmis)
-require(RCurl)
 ```
 ## Environment Information
 ```{r tidy=TRUE}
