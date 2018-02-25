@@ -33,55 +33,22 @@ The questions asked are listed below with data analysis methods and answers.
 ### The Data Provided
 Load Beers.csv
 ```{r, tidy=TRUE}
-UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv"
-DataURL<- getURL(UrlAddress)
-RawBeerData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = "",header=TRUE)
-#I was getting errors due to null values in some columns. So I added fill = TRUE which populates the null with NA.
+RawBeerData <- read_csv("Input/RawDataFiles/Beers.csv")
 ```
 Load Breweries.csv
 ```{r, tidy=TRUE}
-UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Breweries.csv"
-DataURL<- getURL(UrlAddress)
-RawBreweryData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = "",header=TRUE)
-#again here I was getting errors due to null values. I added fill = TRUE which populates the null with NA.
+RawBreweryData <- read_csv("Input/RawDataFiles/Breweries.csv")
 ```
 ###1. How many breweries are present in each state?
-The record (110,"Woodstock Inn, Station & Brewery",North Woodstock, NH) was causing errors so I had to remove, and manually update it.
-
-Identify the record:
+The record (110,"Woodstock Inn, Station & Brewery",North Woodstock, NH) was causing errors but readr fixed this.
+Identify the records:
 ```{r}
 RawBreweryData[c(110, 111, 112),] #Identified erroneous records
 ```
 ```{r}
-#Stage1BreweryData <- RawBreweryData[ which(RawBreweryData$Brew_ID!=' NH'), ] #this seemed to have worked
-#newdata <- mydata[ which(mydata$gender=='F' & mydata$age > 65), ] #example from internet
-
-StagedBreweryData<-spread(RawBreweryData, State) #convert long to wide. Transposed year
-head(SpreadFert)#transposed
-SpreadFert<-arrange(SpreadFert, country) #arranged by country alphabetically
-GatheredFert<-gather(SpreadFert,Year,Fert,3:9)#Gather columns 3-9.Year now a factor rather than numeric.
-head(GatheredFert)
-GatheredFert<-rename(GatheredFert,year=Year,FertilizerConsumption=Fert) #Rename columns
-GatheredFert<-GatheredFert[order(GatheredFert$country,GatheredFert$year),] #Sort data
-FertOutliers<- subset(x = GatheredFert, FertilizerConsumption > 1000) #get only outliers
-GatheredFertSub <- subset(x = GatheredFert, FertilizerConsumption <= 1000)
-GatheredFertSub <- subset(x = GatheredFertSub, country != "Arab World")#subset the subset excluding bad records
-GatheredFertSub<- subset(x = GatheredFertSub, !is.na(FertilizerConsumption)) #y <- x[!is.na(x)] #all non na values from x
-
-
-
-
-#FixedRecords<-data.frame(rbind(c("110","Woodstock Inn Station & Brewery","North Woodstock"," NH" ),c("111","Renegade Brewing Company","Denver", " CO"))) #create records
-#colnames(FixedRecords)<-colnames(RawBreweryData) #add names to the "FixedRecords" dataframe
+Stage1BreweryData<- RawBreweryData
+Stage1BreweryData <-transform(Stage1BreweryData, State = as.character(State))
 ```
-Create a dataframe and call it Stage1BreweryData. I am assuming I will encounter additional issues the will require some tweaking. I want to avoid tampering with the original RawBreweryData dataframe loaded from the file.
-```{r}
-Stage1BreweryData<-data.frame(rbind(RawBreweryData[-c(110,111,112),],FixedRecords))
-Stage1BreweryData<-data.frame(rbind(RawBreweryData[-c(110,111,112),]))
-summary(Stage1BreweryData$State)
-#myData[-c(2, 4, 6), ] 
-```
-
 ```{r, tidy=TRUE}
 CountBreweriesByState<-data.frame(Stage1BreweryData$State)
 summary(CountBreweriesByState,maxsum=100)
