@@ -7,17 +7,10 @@ output:
     keep_md: true
 ---
 
-
 Load Libraries
 
 ```r
 rm(list = ls())
-=======
-
-Load Libraries
-
-```r
-
 library(ggplot2)
 library(readr)
 library(repmis)
@@ -27,7 +20,6 @@ library(RCurl)
 ```
 ## Loading required package: bitops
 ```
-
 
 ```r
 library(bitops)
@@ -86,8 +78,6 @@ library(plyr)
 ## 
 ##     compact
 ```
-=======
-
 ## Environment Information
 
 ```r
@@ -112,7 +102,6 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-
 ##  [1] plyr_1.8.4      forcats_0.2.0   stringr_1.2.0   dplyr_0.7.4    
 ##  [5] purrr_0.2.4     tidyr_0.7.2     tibble_1.4.2    tidyverse_1.2.1
 ##  [9] RCurl_1.95-4.8  bitops_1.0-6    repmis_0.5      readr_1.1.1    
@@ -137,24 +126,6 @@ sessionInfo()
 ## [46] data.table_1.10.4-3 lubridate_1.7.2     rstudioapi_0.7     
 ## [49] assertthat_0.2.0    rmarkdown_1.8       httr_1.3.1         
 ## [52] R6_2.2.2            nlme_3.1-131.1      compiler_3.4.3
-=======
-## [1] RCurl_1.95-4.8 bitops_1.0-6   repmis_0.5     readr_1.1.1   
-## [5] ggplot2_2.2.1 
-## 
-## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.14        knitr_1.17          magrittr_1.5       
-##  [4] hms_0.4.0           munsell_0.4.3       R.cache_0.12.0     
-##  [7] colorspace_1.3-2    R6_2.2.2            rlang_0.1.6        
-## [10] httr_1.3.1          stringr_1.2.0       plyr_1.8.4         
-## [13] tools_3.4.3         grid_3.4.3          data.table_1.10.4-3
-## [16] gtable_0.2.0        R.oo_1.21.0         htmltools_0.3.6    
-## [19] yaml_2.1.16         lazyeval_0.2.1      rprojroot_1.3-1    
-## [22] digest_0.6.13       tibble_1.4.2        formatR_1.5        
-## [25] R.utils_2.6.0       evaluate_0.10.1     rmarkdown_1.8      
-## [28] stringi_1.1.6       compiler_3.4.3      pillar_1.1.0       
-## [31] R.methodsS3_1.7.1   scales_0.5.0        backports_1.1.2    
-## [34] pkgconfig_2.0.1
-
 ```
 ## Brewery Data Analysis
 
@@ -164,7 +135,6 @@ The purpose of this is to present findings from blah blah ....
 The questions asked are listed below with data analysis methods and answers.  
 
 ### The Data Provided
-
 Load Beers.csv
 
 ```r
@@ -449,7 +419,6 @@ summary(Stage2$ABV)
 
 ```r
 p <- ggplot(Stage2, aes(Stage2$ABV, Stage2$IBU))
-# A basic scatter plot
 p + geom_point(size = 1)
 ```
 
@@ -458,46 +427,6 @@ p + geom_point(size = 1)
 ```
 
 ![](MSDS_6306_DoingDataScience_Case_Study_01_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
-=======
-Data was provided in the form of w .csv files which are included in the repository path...
-
-#### Data Issues
-Issues have been identified in the data provided. The OpenRefine tool was used to analyze issues. Actions taken with the data issues are listed:
-*Line 73 Missing 7 elements
-*Line 2410 "Your My Boy" missing beer ID
-
-
-```r
-UrlAddress <- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv"
-DataURL <- getURL(UrlAddress)
-RawBeerData <- read.table(textConnection(DataURL), fill = TRUE, sep = ",", quote = "", 
-    header = TRUE)
-# I was having errors due to null values in some columns. I added fill =
-# TRUE to fill in the blanks.
-```
-
-
-###1. How many breweries are present in each state?
-
-###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
-
-###3. Report the number of NA’s in each column.
-
-###4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare.
-
-###5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
-
-###6. Summary statistics for the ABV variable.
-
-###7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer.
-
-
-
-
-
-
-
-
 
 >Formatting Samples  
 
