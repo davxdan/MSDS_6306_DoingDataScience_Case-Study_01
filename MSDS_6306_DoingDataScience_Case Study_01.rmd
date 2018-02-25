@@ -11,11 +11,13 @@ knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 ```
 Load Libraries
 ```{r, eval=TRUE}
+rm(list=ls())
 library(ggplot2)
 library(readr)
 library(repmis)
 library(RCurl)
 library(bitops)
+library(tidyverse)
 ```
 ## Environment Information
 ```{r tidy=TRUE}
@@ -29,37 +31,60 @@ The purpose of this is to present findings from blah blah ....
 The questions asked are listed below with data analysis methods and answers.  
 
 ### The Data Provided
-Data was provided in the form of w .csv files which are included in the repository path...
-
-
-
+Load Beers.csv
 ```{r, tidy=TRUE}
-#Load Beers.csv into a dataframe
 UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv"
 DataURL<- getURL(UrlAddress)
 RawBeerData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = "",header=TRUE)
-#RawBeerData<-read.table(textConnection("Beers.csv"),fill = TRUE, sep=",", quote = "",header=TRUE)
-
-#Load Breweries.csv
+#I was getting errors due to null values in some columns. So I added fill = TRUE which populates the null with NA.
+```
+Load Breweries.csv
+```{r, tidy=TRUE}
 UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Breweries.csv"
 DataURL<- getURL(UrlAddress)
 RawBreweryData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = "",header=TRUE)
-#RawBreweryData<-read.table(textConnection("Breweries.csv"),fill = TRUE, sep=",", quote = "",header=TRUE)
-
-RawBreweryData[c(110, 111, 112),] #Identified erroneous record
-
-#Fix and reinsert Renegade Brewing Co. and Woodstock Inn
-FixedRecords<-rbind(c("110","Woodstock Inn Station & Brewery","North Woodstock","NH" ),c("111","Renegade Brewing Company","Denver", "CO"))
-colnames(FixedRecords)<-colnames(RawBreweryData)
-
-#Regenerate the Data 
-Stage1BreweryData<-data.frame(rbind(RawBreweryData[-c(110,111,112),],FixedRecords))
+#again here I was getting errors due to null values. I added fill = TRUE which populates the null with NA.
 ```
 ###1. How many breweries are present in each state?
+The record (110,"Woodstock Inn, Station & Brewery",North Woodstock, NH) was causing errors so I had to remove, and manually update it.
+
+Identify the record:
+```{r}
+RawBreweryData[c(110, 111, 112),] #Identified erroneous records
+```
+```{r}
+#Stage1BreweryData <- RawBreweryData[ which(RawBreweryData$Brew_ID!=' NH'), ] #this seemed to have worked
+#newdata <- mydata[ which(mydata$gender=='F' & mydata$age > 65), ] #example from internet
+
+StagedBreweryData<-spread(RawBreweryData, State) #convert long to wide. Transposed year
+head(SpreadFert)#transposed
+SpreadFert<-arrange(SpreadFert, country) #arranged by country alphabetically
+GatheredFert<-gather(SpreadFert,Year,Fert,3:9)#Gather columns 3-9.Year now a factor rather than numeric.
+head(GatheredFert)
+GatheredFert<-rename(GatheredFert,year=Year,FertilizerConsumption=Fert) #Rename columns
+GatheredFert<-GatheredFert[order(GatheredFert$country,GatheredFert$year),] #Sort data
+FertOutliers<- subset(x = GatheredFert, FertilizerConsumption > 1000) #get only outliers
+GatheredFertSub <- subset(x = GatheredFert, FertilizerConsumption <= 1000)
+GatheredFertSub <- subset(x = GatheredFertSub, country != "Arab World")#subset the subset excluding bad records
+GatheredFertSub<- subset(x = GatheredFertSub, !is.na(FertilizerConsumption)) #y <- x[!is.na(x)] #all non na values from x
+
+
+
+
+#FixedRecords<-data.frame(rbind(c("110","Woodstock Inn Station & Brewery","North Woodstock"," NH" ),c("111","Renegade Brewing Company","Denver", " CO"))) #create records
+#colnames(FixedRecords)<-colnames(RawBreweryData) #add names to the "FixedRecords" dataframe
+```
+Create a dataframe and call it Stage1BreweryData. I am assuming I will encounter additional issues the will require some tweaking. I want to avoid tampering with the original RawBreweryData dataframe loaded from the file.
+```{r}
+Stage1BreweryData<-data.frame(rbind(RawBreweryData[-c(110,111,112),],FixedRecords))
+Stage1BreweryData<-data.frame(rbind(RawBreweryData[-c(110,111,112),]))
+summary(Stage1BreweryData$State)
+#myData[-c(2, 4, 6), ] 
+```
+
 ```{r, tidy=TRUE}
-
-CountBreweriesByState<-table(RawBreweryData$State)
-
+CountBreweriesByState<-data.frame(Stage1BreweryData$State)
+summary(CountBreweriesByState,maxsum=100)
 ```
 ###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
 
