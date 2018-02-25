@@ -15,6 +15,7 @@ library(ggplot2)
 library(readr)
 library(repmis)
 library(RCurl)
+library(bitops)
 ```
 ## Environment Information
 ```{r tidy=TRUE}

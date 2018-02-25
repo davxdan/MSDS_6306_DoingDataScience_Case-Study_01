@@ -19,6 +19,10 @@ library(RCurl)
 ```
 ## Loading required package: bitops
 ```
+
+```r
+library(bitops)
+```
 ## Environment Information
 
 ```r
