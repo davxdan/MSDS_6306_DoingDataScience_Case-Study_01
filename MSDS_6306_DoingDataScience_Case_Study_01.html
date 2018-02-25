@@ -161,10 +161,11 @@ library(RCurl)</code></pre>
 ## [13] tools_3.4.3         grid_3.4.3          data.table_1.10.4-3
 ## [16] gtable_0.2.0        R.oo_1.21.0         htmltools_0.3.6    
 ## [19] yaml_2.1.16         lazyeval_0.2.1      rprojroot_1.3-1    
-## [22] digest_0.6.13       tibble_1.4.2        R.utils_2.6.0      
-## [25] evaluate_0.10.1     rmarkdown_1.8       stringi_1.1.6      
-## [28] compiler_3.4.3      pillar_1.1.0        R.methodsS3_1.7.1  
-## [31] scales_0.5.0        backports_1.1.2     pkgconfig_2.0.1</code></pre>
+## [22] digest_0.6.13       tibble_1.4.2        formatR_1.5        
+## [25] R.utils_2.6.0       evaluate_0.10.1     rmarkdown_1.8      
+## [28] stringi_1.1.6       compiler_3.4.3      pillar_1.1.0       
+## [31] R.methodsS3_1.7.1   scales_0.5.0        backports_1.1.2    
+## [34] pkgconfig_2.0.1</code></pre>
 </div>
 <div id="brewery-data-analysis" class="section level2">
 <h2>Brewery Data Analysis</h2>
@@ -176,10 +177,12 @@ library(RCurl)</code></pre>
 <div id="data-issues" class="section level4">
 <h4>Data Issues</h4>
 <p>Issues have been identified in the data provided. The OpenRefine tool was used to analyze issues. Actions taken with the data issues are listed: <em>Line 73 Missing 7 elements </em>Line 2410 “Your My Boy” missing beer ID</p>
-<pre class="r"><code>UrlAddress&lt;- &quot;https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv&quot;
-DataURL&lt;- getURL(UrlAddress)
-RawBeerData&lt;-read.table(textConnection(DataURL),fill = TRUE, sep=&quot;,&quot;, quote = &quot;&quot;,header=TRUE)</code></pre>
-<p>read.table wants to return a data.frame, which must have an element in each column. Therefore R expects each row to have the same number of elements and it doesn’t fill in empty spaces by default. Try read.table(“/PathTo/file.csv” , fill = TRUE ) to fill in the blanks.</p>
+<pre class="r"><code>UrlAddress &lt;- &quot;https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv&quot;
+DataURL &lt;- getURL(UrlAddress)
+RawBeerData &lt;- read.table(textConnection(DataURL), fill = TRUE, sep = &quot;,&quot;, quote = &quot;&quot;, 
+    header = TRUE)
+# I was having errors due to null values in some columns. I added fill =
+# TRUE to fill in the blanks.</code></pre>
 </div>
 </div>
 <div id="how-many-breweries-are-present-in-each-state" class="section level3">
