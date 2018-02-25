@@ -27,17 +27,17 @@ library(tidyverse)
 ```
 
 ```
-## -- Attaching packages ------------------------------------------------------------------------------- tidyverse 1.2.1 --
+## -- Attaching packages --------------------------------------------------------------------------------------- tidyverse 1.2.1 --
 ```
 
 ```
-## v tibble  1.4.1     v dplyr   0.7.4
+## v tibble  1.4.2     v dplyr   0.7.4
 ## v tidyr   0.7.2     v stringr 1.2.0
 ## v purrr   0.2.4     v forcats 0.2.0
 ```
 
 ```
-## -- Conflicts ---------------------------------------------------------------------------------- tidyverse_conflicts() --
+## -- Conflicts ------------------------------------------------------------------------------------------ tidyverse_conflicts() --
 ## x tidyr::complete() masks RCurl::complete()
 ## x dplyr::filter()   masks stats::filter()
 ## x dplyr::lag()      masks stats::lag()
@@ -67,28 +67,28 @@ sessionInfo()
 ## 
 ## other attached packages:
 ##  [1] forcats_0.2.0   stringr_1.2.0   dplyr_0.7.4     purrr_0.2.4    
-##  [5] tidyr_0.7.2     tibble_1.4.1    tidyverse_1.2.1 RCurl_1.95-4.10
+##  [5] tidyr_0.7.2     tibble_1.4.2    tidyverse_1.2.1 RCurl_1.95-4.8 
 ##  [9] bitops_1.0-6    repmis_0.5      readr_1.1.1     ggplot2_2.2.1  
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] reshape2_1.4.3      haven_1.1.1         lattice_0.20-35    
 ##  [4] colorspace_1.3-2    htmltools_0.3.6     yaml_2.1.16        
-##  [7] rlang_0.1.6         R.oo_1.21.0         pillar_1.0.1       
+##  [7] rlang_0.1.6         R.oo_1.21.0         pillar_1.1.0       
 ## [10] foreign_0.8-69      glue_1.2.0          R.utils_2.6.0      
 ## [13] modelr_0.1.1        readxl_1.0.0        bindrcpp_0.2       
-## [16] R.cache_0.13.0      plyr_1.8.4          bindr_0.1          
+## [16] R.cache_0.12.0      plyr_1.8.4          bindr_0.1          
 ## [19] munsell_0.4.3       gtable_0.2.0        cellranger_1.1.0   
 ## [22] rvest_0.3.2         R.methodsS3_1.7.1   psych_1.7.8        
-## [25] evaluate_0.10.1     knitr_1.18          parallel_3.4.3     
+## [25] evaluate_0.10.1     knitr_1.17          parallel_3.4.3     
 ## [28] broom_0.4.3         Rcpp_0.12.14        scales_0.5.0       
 ## [31] backports_1.1.2     formatR_1.5         jsonlite_1.5       
-## [34] mnormt_1.5-5        hms_0.4.1           digest_0.6.13      
-## [37] stringi_1.1.6       grid_3.4.3          rprojroot_1.3-2    
+## [34] mnormt_1.5-5        hms_0.4.0           digest_0.6.13      
+## [37] stringi_1.1.6       grid_3.4.3          rprojroot_1.3-1    
 ## [40] cli_1.0.0           tools_3.4.3         magrittr_1.5       
 ## [43] lazyeval_0.2.1      crayon_1.3.4        pkgconfig_2.0.1    
 ## [46] xml2_1.2.0          data.table_1.10.4-3 lubridate_1.7.2    
 ## [49] rstudioapi_0.7      assertthat_0.2.0    rmarkdown_1.8      
-## [52] httr_1.3.1          R6_2.2.2            nlme_3.1-131       
+## [52] httr_1.3.1          R6_2.2.2            nlme_3.1-131.1     
 ## [55] compiler_3.4.3
 ```
 ## Brewery Data Analysis
@@ -216,22 +216,21 @@ summary(CountBreweriesByState, maxsum = 100)
 ###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
 
 ```r
-colnames(Stage1BreweryData) <- c("Brewery_id", "Name", "City", "State")
+colnames(Stage1BreweryData) <- c("Brewery_id", "BreweryName", "City", "State")
 Stage2 <- merge(x = RawBeerData, y = Stage1BreweryData, by = c("Brewery_id"), 
     all = FALSE)
-
 head(Stage2)
 ```
 
 ```
-##   Brewery_id        Name.x Beer_ID   ABV IBU
+##   Brewery_id          Name Beer_ID   ABV IBU
 ## 1          1  Get Together    2692 0.045  50
 ## 2          1 Maggie's Leap    2691 0.049  26
 ## 3          1    Wall's End    2690 0.048  19
 ## 4          1       Pumpion    2689 0.060  38
 ## 5          1    Stronghold    2688 0.060  25
 ## 6          1   Parapet ESB    2687 0.056  47
-##                                 Style Ounces            Name.y        City
+##                                 Style Ounces       BreweryName        City
 ## 1                        American IPA     16 NorthGate Brewing Minneapolis
 ## 2                  Milk / Sweet Stout     16 NorthGate Brewing Minneapolis
 ## 3                   English Brown Ale     16 NorthGate Brewing Minneapolis
@@ -252,14 +251,14 @@ tail(Stage2)
 ```
 
 ```
-##      Brewery_id                    Name.x Beer_ID   ABV IBU
+##      Brewery_id                      Name Beer_ID   ABV IBU
 ## 2405        556             Pilsner Ukiah      98 0.055  NA
 ## 2406        557  Heinnieweisse Weissebier      52 0.049  NA
 ## 2407        557           Snapperhead IPA      51 0.068  NA
 ## 2408        557         Moo Thunder Stout      50 0.049  NA
 ## 2409        557         Porkslap Pale Ale      49 0.043  NA
 ## 2410        558 Urban Wilderness Pale Ale      30 0.049  NA
-##                        Style Ounces                        Name.y
+##                        Style Ounces                   BreweryName
 ## 2405         German Pilsener     12         Ukiah Brewing Company
 ## 2406              Hefeweizen     12       Butternuts Beer and Ale
 ## 2407            American IPA     12       Butternuts Beer and Ale
@@ -278,22 +277,52 @@ tail(Stage2)
 ###3. Report the number of NA’s in each column.
 
 ```r
-sum(is.na(Stage2$Brewery_id))
+Brewery_id <- sum(is.na(Stage2$Brewery_id))
+Name <- sum(is.na(Stage2$Name))
+Beer_ID <- sum(is.na(Stage2$Beer_ID))
+ABV <- sum(is.na(Stage2$ABV))
+IBU <- sum(is.na(Stage2$IBU))
+Style <- sum(is.na(Stage2$Style))
+Ounces <- sum(is.na(Stage2$Ounces))
+BreweryName <- sum(is.na(Stage2$BreweryName))
+City <- sum(is.na(Stage2$City))
+State <- sum(is.na(Stage2$State))
+NASummary <- as.matrix(c(Brewery_id, Name, Beer_ID, ABV, IBU, Style, Ounces, 
+    BreweryName, City, State))
+colnames(NASummary) <- c("Count of NA's")
+rownames(NASummary) <- c("Brewery_id", "Name", "Beer_ID", "ABV", "IBU", "Style", 
+    "Ounces", "BreweryName", "City", "State")
+NASummary
 ```
 
 ```
-## [1] 0
-```
-
-```r
-sum(is.na(Stage2$Brewery_id))
-```
-
-```
-## [1] 0
+##             Count of NA's
+## Brewery_id              0
+## Name                    0
+## Beer_ID                 0
+## ABV                    62
+## IBU                  1005
+## Style                   5
+## Ounces                  0
+## BreweryName             0
+## City                    0
+## State                   0
 ```
 
 ###4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare.
+
+```r
+getMedians <- function(x) {
+    c(median = median(x, na.rm = TRUE))
+}
+Medians <- as.data.frame(tapply(Stage2$ABV, Stage2$State, getMedians))
+
+par(las = 2)
+barplot(Medians[, 1], main = "Median Alchohol Content and International Bitterness Unit", 
+    horiz = FALSE, col = 4, xlim = c(0, 30))
+```
+
+![](MSDS_6306_DoingDataScience_Case_Study_01_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 ###5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
 
