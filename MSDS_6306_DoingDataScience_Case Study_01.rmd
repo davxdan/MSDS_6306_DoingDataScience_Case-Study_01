@@ -116,14 +116,10 @@ summary(Stage2$ABV)
 ```
 
 ###7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer.
-
-
-
-
-
-
-
-
+```{r}
+p <- ggplot(Stage2, aes(Stage2$ABV, Stage2$IBU))
+p + geom_point(size = 1)
+```
 
 >Formatting Samples  
 
