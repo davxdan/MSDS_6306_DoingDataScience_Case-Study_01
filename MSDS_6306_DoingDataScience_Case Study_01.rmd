@@ -6,16 +6,22 @@ output:
   html_document:
     keep_md: true
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 ```
 Load Libraries
 ```{r, eval=TRUE}
+rm(list=ls())
 library(ggplot2)
 library(readr)
 library(repmis)
 library(RCurl)
+
+library(bitops)
+library(tidyverse)
+library(plyr)
+=======
+
 ```
 ## Environment Information
 ```{r tidy=TRUE}
@@ -29,14 +35,16 @@ The purpose of this is to present findings from blah blah ....
 The questions asked are listed below with data analysis methods and answers.  
 
 ### The Data Provided
-Data was provided in the form of w .csv files which are included in the repository path...
-
-#### Data Issues
-Issues have been identified in the data provided. The OpenRefine tool was used to analyze issues. Actions taken with the data issues are listed:
-*Line 73 Missing 7 elements
-*Line 2410 "Your My Boy" missing beer ID
-
+Load Beers.csv
 ```{r, tidy=TRUE}
+
+RawBeerData <- read_csv("Input/RawDataFiles/Beers.csv")
+```
+Load Breweries.csv
+```{r, tidy=TRUE}
+RawBreweryData <- read_csv("Input/RawDataFiles/Breweries.csv")
+```
+=======
 UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv"
 DataURL<- getURL(UrlAddress)
 RawBeerData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = "",header=TRUE)
@@ -44,27 +52,87 @@ RawBeerData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = ""
 ```
 
 
-###1. How many breweries are present in each state?
 
+###1. How many breweries are present in each state?
+The record (110,"Woodstock Inn, Station & Brewery",North Woodstock, NH) was causing errors but readr fixed this.
+Identify the records:
+```{r}
+RawBreweryData[c(110, 111, 112),] #Identified erroneous records
+```
+```{r}
+Stage1BreweryData<- RawBreweryData
+Stage1BreweryData <-transform(Stage1BreweryData, State = as.character(State))
+```
+```{r, tidy=TRUE}
+CountBreweriesByState<-data.frame(Stage1BreweryData$State)
+summary(CountBreweriesByState,maxsum=100)
+```
 ###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
+```{r}
+colnames(Stage1BreweryData) <- c("Brewery_id","BreweryName","City","State")
+Stage2<- merge(x= RawBeerData, y=Stage1BreweryData, by = c("Brewery_id"), all=FALSE)
+head(Stage2)
+tail(Stage2)
+```
 
 ###3. Report the number of NA’s in each column.
+```{r}
+Brewery_id<-sum(is.na(Stage2$Brewery_id))
+Name<-sum(is.na(Stage2$Name))
+Beer_ID<-sum(is.na(Stage2$Beer_ID))
+ABV<-sum(is.na(Stage2$ABV))
+IBU<-sum(is.na(Stage2$IBU))
+Style<-sum(is.na(Stage2$Style))
+Ounces<-sum(is.na(Stage2$Ounces))
+BreweryName<-sum(is.na(Stage2$BreweryName))
+City<-sum(is.na(Stage2$City))
+State<-sum(is.na(Stage2$State))
+NASummary<-as.matrix(c(Brewery_id, Name, Beer_ID, ABV, IBU, Style, Ounces, BreweryName, City, State))
+colnames(NASummary)<-c("Count of NA's")
+rownames(NASummary) <- c("Brewery_id", "Name", "Beer_ID", "ABV", "IBU", "Style", "Ounces", "BreweryName", "City", "State")
+NASummary
+```
 
 ###4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare.
+```{r}
+  getMedians <- function(x)
+  {
+  c(median = median(x,na.rm=TRUE ))
+  }
+ABVMedians<-as.data.frame(tapply(Stage2$ABV, Stage2$State, getMedians))
+
+par(las=2)
+barplot(ABVMedians[,1],main ="Median Alchohol Content by State", horiz = FALSE, col = 4)
+```
+```{r}
+IBUMedians<-as.data.frame(tapply(Stage2$IBU, Stage2$State, getMedians))
+
+par(las=2)
+barplot(IBUMedians[,1],main ="International Bitterness Units by State", horiz = FALSE, col = 4)
+```
 
 ###5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
+```{r}
+MaxABVState<-ddply(Stage2, .(State), summarise, MaxABVState = max(ABV, na.rm=TRUE))
+MaxABVState<-MaxABVState[order(MaxABVState$MaxABVState),]
+head(MaxABVState,1)
+
+summary(Stage2$ABV)
+MaxIBUState<-ddply(Stage2, .(State), summarise, MaxIBUState = max(as.double(Stage2$IBU), na.rm=TRUE))
+MaxIBUState<-MaxIBUState[order(MaxIBUState$MaxIBUState),]
+head(MaxIBUState,1)
+```
 
 ###6. Summary statistics for the ABV variable.
+```{r}
+summary(Stage2$ABV)
+```
 
 ###7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer.
-
-
-
-
-
-
-
-
+```{r}
+p <- ggplot(Stage2, aes(Stage2$ABV, Stage2$IBU))
+p + geom_point(size = 1)
+```
 
 >Formatting Samples  
 
