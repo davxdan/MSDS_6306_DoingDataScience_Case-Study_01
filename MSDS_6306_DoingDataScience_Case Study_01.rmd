@@ -2,10 +2,10 @@
 title: "Case Study_01_BeerDataAnalysis"
 authors: "Daniel Davieau, Lakeitra Webb, Emil Ramos"
 date: "February 19, 2018"
-output: html_document
-keep_md: yes
+output:
+  html_document:
+    keep_md: true
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 ```
