@@ -54,8 +54,20 @@ CountBreweriesByState<-data.frame(Stage1BreweryData$State)
 summary(CountBreweriesByState,maxsum=100)
 ```
 ###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
+```{r}
+colnames(Stage1BreweryData) <- c("Brewery_id","Name","City","State")
+Stage2<- merge(x= RawBeerData, y=Stage1BreweryData, by = c("Brewery_id"), all=FALSE)
+
+head(Stage2)
+tail(Stage2)
+```
 
 ###3. Report the number of NA’s in each column.
+```{r}
+sum(is.na(Stage2$Brewery_id))
+sum(is.na(Stage2$Brewery_id))
+
+```
 
 ###4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare.
 
