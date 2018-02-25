@@ -131,7 +131,6 @@ library(readr)
 library(repmis)
 library(RCurl)</code></pre>
 <pre><code>## Loading required package: bitops</code></pre>
-
 <pre class="r"><code>library(bitops)
 library(tidyverse)</code></pre>
 <pre><code>## -- Attaching packages --------------------------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
@@ -157,8 +156,6 @@ library(tidyverse)</code></pre>
 <pre><code>## The following object is masked from 'package:purrr':
 ## 
 ##     compact</code></pre>
-=======
-
 <div id="environment-information" class="section level2">
 <h2>Environment Information</h2>
 <pre class="r"><code>sessionInfo()</code></pre>
@@ -185,7 +182,6 @@ library(tidyverse)</code></pre>
 ## [13] ggplot2_2.2.1  
 ## 
 ## loaded via a namespace (and not attached):
-
 ##  [1] reshape2_1.4.3      haven_1.1.1         lattice_0.20-35    
 ##  [4] colorspace_1.3-2    htmltools_0.3.6     yaml_2.1.16        
 ##  [7] rlang_0.1.6         R.oo_1.21.0         pillar_1.1.0       
@@ -204,20 +200,6 @@ library(tidyverse)</code></pre>
 ## [46] data.table_1.10.4-3 lubridate_1.7.2     rstudioapi_0.7     
 ## [49] assertthat_0.2.0    rmarkdown_1.8       httr_1.3.1         
 ## [52] R6_2.2.2            nlme_3.1-131.1      compiler_3.4.3</code></pre>
-=======
-##  [1] Rcpp_0.12.14        knitr_1.17          magrittr_1.5       
-##  [4] hms_0.4.0           munsell_0.4.3       R.cache_0.12.0     
-##  [7] colorspace_1.3-2    R6_2.2.2            rlang_0.1.6        
-## [10] httr_1.3.1          stringr_1.2.0       plyr_1.8.4         
-## [13] tools_3.4.3         grid_3.4.3          data.table_1.10.4-3
-## [16] gtable_0.2.0        R.oo_1.21.0         htmltools_0.3.6    
-## [19] yaml_2.1.16         lazyeval_0.2.1      rprojroot_1.3-1    
-## [22] digest_0.6.13       tibble_1.4.2        formatR_1.5        
-## [25] R.utils_2.6.0       evaluate_0.10.1     rmarkdown_1.8      
-## [28] stringi_1.1.6       compiler_3.4.3      pillar_1.1.0       
-## [31] R.methodsS3_1.7.1   scales_0.5.0        backports_1.1.2    
-## [34] pkgconfig_2.0.1</code></pre>
-
 </div>
 <div id="brewery-data-analysis" class="section level2">
 <h2>Brewery Data Analysis</h2>
@@ -225,7 +207,6 @@ library(tidyverse)</code></pre>
 <p>The purpose of this is to present findings from blah blah …. The questions asked are listed below with data analysis methods and answers.</p>
 <div id="the-data-provided" class="section level3">
 <h3>The Data Provided</h3>
-
 <p>Load Beers.csv</p>
 <pre class="r"><code>RawBeerData &lt;- read_csv(&quot;Input/RawDataFiles/Beers.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
@@ -247,19 +228,6 @@ library(tidyverse)</code></pre>
 ##   City = col_character(),
 ##   State = col_character()
 ## )</code></pre>
-=======
-<p>Data was provided in the form of w .csv files which are included in the repository path…</p>
-<div id="data-issues" class="section level4">
-<h4>Data Issues</h4>
-<p>Issues have been identified in the data provided. The OpenRefine tool was used to analyze issues. Actions taken with the data issues are listed: <em>Line 73 Missing 7 elements </em>Line 2410 “Your My Boy” missing beer ID</p>
-<pre class="r"><code>UrlAddress &lt;- &quot;https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv&quot;
-DataURL &lt;- getURL(UrlAddress)
-RawBeerData &lt;- read.table(textConnection(DataURL), fill = TRUE, sep = &quot;,&quot;, quote = &quot;&quot;, 
-    header = TRUE)
-# I was having errors due to null values in some columns. I added fill =
-# TRUE to fill in the blanks.</code></pre>
-</div>
-
 </div>
 <div id="how-many-breweries-are-present-in-each-state" class="section level3">
 <h3>1. How many breweries are present in each state?</h3>
@@ -452,7 +420,6 @@ head(MaxIBUState, 1)</code></pre>
 <div id="is-there-an-apparent-relationship-between-the-bitterness-of-the-beer-and-its-alcoholic-content-draw-a-scatter-plot.-you-are-welcome-to-use-the-ggplot2-library-for-graphs.-please-ignore-missing-values-in-your-analysis.-make-your-best-judgment-of-a-relationship-and-explain-your-answer." class="section level3">
 <h3>7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer.</h3>
 <pre class="r"><code>p &lt;- ggplot(Stage2, aes(Stage2$ABV, Stage2$IBU))
-# A basic scatter plot
 p + geom_point(size = 1)</code></pre>
 <pre><code>## Warning: Removed 1005 rows containing missing values (geom_point).</code></pre>
 <p><img src="data:image/png;base64,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" /><!-- --></p>

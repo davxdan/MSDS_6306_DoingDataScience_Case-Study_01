@@ -20,8 +20,6 @@ library(RCurl)
 library(bitops)
 library(tidyverse)
 library(plyr)
-=======
-
 ```
 ## Environment Information
 ```{r tidy=TRUE}
@@ -44,15 +42,6 @@ Load Breweries.csv
 ```{r, tidy=TRUE}
 RawBreweryData <- read_csv("Input/RawDataFiles/Breweries.csv")
 ```
-=======
-UrlAddress<- "https://raw.githubusercontent.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01/master/Input/RawDataFiles/Beers.csv"
-DataURL<- getURL(UrlAddress)
-RawBeerData<-read.table(textConnection(DataURL),fill = TRUE, sep=",", quote = "",header=TRUE)
-# I was having errors due to null values in some columns. I added fill = TRUE to fill in the blanks.
-```
-
-
-
 ###1. How many breweries are present in each state?
 The record (110,"Woodstock Inn, Station & Brewery",North Woodstock, NH) was causing errors but readr fixed this.
 Identify the records:
