@@ -1,10 +1,10 @@
 ---
 title: "Case Study_01_BeerDataAnalysis"
-authors: "Daniel Davieau, Lakeitra Webb, Emil Ramos"
 date: "February 19, 2018"
 output:
   html_document:
-    keep_md: true
+    keep_md: yes
+authors: Daniel Davieau, Lakeitra Webb, Emil Ramos
 ---
 
 Load Libraries
