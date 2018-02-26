@@ -9,9 +9,9 @@ MSDS_6306_DoingDataScience_Case_Study_01.html is the final output and deliverabl
 
 /Input/RawDataFiles contains raw data in the state it was in as it was provided to this project team.  
 
-  Beers.csv  
+  Beers.csv  - raw beer data
   
-  Breweries.csv  
+  Breweries.csv  - raw brewery data
 
 BeersDataIssues.xlsx contains analysis information of questionasble data in the Beers.csv  
   
