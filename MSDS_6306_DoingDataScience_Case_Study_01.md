@@ -7,7 +7,7 @@ output:
     keep_md: true
 ---
 
-##1 Introduction
+## Introduction
 
 The purpose of this documentaton is to provide analysis answers to questions asked by you (the client) related to several different Beers and the Breweries that produce them.
 
@@ -23,19 +23,18 @@ Each subsequent section contains (in order) :
 
 ---  
 
-## Environment Information  
+##1. Environment Information  
 
 >  This code block loads the libraries required to process the subsequent code.  
 
 
 ```r
-rm(list=ls())
+rm(list = ls())
 library(ggplot2)
 library(readr)
-#library(repmis)
-#library(RCurl)
+# library(repmis) library(RCurl)
 library(bitops)
-#library(tidyverse)
+# library(tidyverse)
 library(plyr)
 ```
 > This code block displays the hardware, software and thier versions.  
@@ -46,21 +45,18 @@ sessionInfo()
 ```
 
 ```
-## R version 3.4.2 (2017-09-28)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 17.10
+## R version 3.4.3 (2017-11-30)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 10 x64 (build 16299)
 ## 
 ## Matrix products: default
-## BLAS: /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
-## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## [1] LC_COLLATE=English_United States.1252 
+## [2] LC_CTYPE=English_United States.1252   
+## [3] LC_MONETARY=English_United States.1252
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.1252    
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
@@ -69,13 +65,13 @@ sessionInfo()
 ## [1] plyr_1.8.4    bitops_1.0-6  readr_1.1.1   ggplot2_2.2.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.15     knitr_1.20       magrittr_1.5     hms_0.4.1       
-##  [5] munsell_0.4.3    colorspace_1.3-2 R6_2.2.2         rlang_0.2.0     
-##  [9] stringr_1.3.0    tools_3.4.2      grid_3.4.2       gtable_0.2.0    
+##  [1] Rcpp_0.12.14     knitr_1.18       magrittr_1.5     hms_0.4.1       
+##  [5] munsell_0.4.3    colorspace_1.3-2 R6_2.2.2         rlang_0.1.6     
+##  [9] stringr_1.2.0    tools_3.4.3      grid_3.4.3       gtable_0.2.0    
 ## [13] htmltools_0.3.6  yaml_2.1.16      lazyeval_0.2.1   rprojroot_1.3-2 
-## [17] digest_0.6.15    tibble_1.4.2     evaluate_0.10.1  rmarkdown_1.8   
-## [21] stringi_1.1.6    compiler_3.4.2   pillar_1.2.0     scales_0.5.0    
-## [25] backports_1.1.2  pkgconfig_2.0.1
+## [17] digest_0.6.13    tibble_1.4.1     formatR_1.5      evaluate_0.10.1 
+## [21] rmarkdown_1.8    stringi_1.1.6    compiler_3.4.3   pillar_1.0.1    
+## [25] scales_0.5.0     backports_1.1.2  pkgconfig_2.0.1
 ```
 
 
@@ -125,7 +121,7 @@ The record (110,"Woodstock Inn, Station & Brewery",North Woodstock, NH) was caus
 Identify the records:
 
 ```r
-RawBreweryData[c(110, 111, 112),] #Identified erroneous records
+RawBreweryData[c(110, 111, 112), ]  #Identified erroneous records
 ```
 
 ```
@@ -138,13 +134,13 @@ RawBreweryData[c(110, 111, 112),] #Identified erroneous records
 ```
 
 ```r
-Stage1BreweryData<- RawBreweryData
-Stage1BreweryData <-transform(Stage1BreweryData, State = as.character(State))
+Stage1BreweryData <- RawBreweryData
+Stage1BreweryData <- transform(Stage1BreweryData, State = as.character(State))
 ```
 
 ```r
-CountBreweriesByState<-data.frame(Stage1BreweryData$State)
-summary(CountBreweriesByState,maxsum=100)
+CountBreweriesByState <- data.frame(Stage1BreweryData$State)
+summary(CountBreweriesByState, maxsum = 100)
 ```
 
 ```
@@ -204,8 +200,9 @@ summary(CountBreweriesByState,maxsum=100)
 ###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
 
 ```r
-colnames(Stage1BreweryData) <- c("Brewery_id","BreweryName","City","State")
-Stage2<- merge(x= RawBeerData, y=Stage1BreweryData, by = c("Brewery_id"), all=FALSE)
+colnames(Stage1BreweryData) <- c("Brewery_id", "BreweryName", "City", "State")
+Stage2 <- merge(x = RawBeerData, y = Stage1BreweryData, by = c("Brewery_id"), 
+    all = FALSE)
 head(Stage2)
 ```
 
@@ -264,19 +261,21 @@ tail(Stage2)
 ###3. Report the number of NA’s in each column.
 
 ```r
-Brewery_id<-sum(is.na(Stage2$Brewery_id))
-Name<-sum(is.na(Stage2$Name))
-Beer_ID<-sum(is.na(Stage2$Beer_ID))
-ABV<-sum(is.na(Stage2$ABV))
-IBU<-sum(is.na(Stage2$IBU))
-Style<-sum(is.na(Stage2$Style))
-Ounces<-sum(is.na(Stage2$Ounces))
-BreweryName<-sum(is.na(Stage2$BreweryName))
-City<-sum(is.na(Stage2$City))
-State<-sum(is.na(Stage2$State))
-NASummary<-as.matrix(c(Brewery_id, Name, Beer_ID, ABV, IBU, Style, Ounces, BreweryName, City, State))
-colnames(NASummary)<-c("Count of NA's")
-rownames(NASummary) <- c("Brewery_id", "Name", "Beer_ID", "ABV", "IBU", "Style", "Ounces", "BreweryName", "City", "State")
+Brewery_id <- sum(is.na(Stage2$Brewery_id))
+Name <- sum(is.na(Stage2$Name))
+Beer_ID <- sum(is.na(Stage2$Beer_ID))
+ABV <- sum(is.na(Stage2$ABV))
+IBU <- sum(is.na(Stage2$IBU))
+Style <- sum(is.na(Stage2$Style))
+Ounces <- sum(is.na(Stage2$Ounces))
+BreweryName <- sum(is.na(Stage2$BreweryName))
+City <- sum(is.na(Stage2$City))
+State <- sum(is.na(Stage2$State))
+NASummary <- as.matrix(c(Brewery_id, Name, Beer_ID, ABV, IBU, Style, Ounces, 
+    BreweryName, City, State))
+colnames(NASummary) <- c("Count of NA's")
+rownames(NASummary) <- c("Brewery_id", "Name", "Beer_ID", "ABV", "IBU", "Style", 
+    "Ounces", "BreweryName", "City", "State")
 NASummary
 ```
 
@@ -297,23 +296,24 @@ NASummary
 ###4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare.
 
 ```r
-  getMedians <- function(x)
-  {
-  c(median = median(x,na.rm=TRUE ))
-  }
-ABVMedians<-as.data.frame(tapply(Stage2$ABV, Stage2$State, getMedians))
+getMedians <- function(x) {
+    c(median = median(x, na.rm = TRUE))
+}
+ABVMedians <- as.data.frame(tapply(Stage2$ABV, Stage2$State, getMedians))
 
-par(las=2)
-barplot(ABVMedians[,1],main ="Median Alchohol Content by State", horiz = FALSE, col = 4)
+par(las = 2)
+barplot(ABVMedians[, 1], main = "Median Alchohol Content by State", horiz = FALSE, 
+    col = 4)
 ```
 
 ![](MSDS_6306_DoingDataScience_Case_Study_01_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 ```r
-IBUMedians<-as.data.frame(tapply(Stage2$IBU, Stage2$State, getMedians))
+IBUMedians <- as.data.frame(tapply(Stage2$IBU, Stage2$State, getMedians))
 
-par(las=2)
-barplot(IBUMedians[,1],main ="International Bitterness Units by State", horiz = FALSE, col = 4)
+par(las = 2)
+barplot(IBUMedians[, 1], main = "International Bitterness Units by State", horiz = FALSE, 
+    col = 4)
 ```
 
 ![](MSDS_6306_DoingDataScience_Case_Study_01_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
@@ -321,9 +321,9 @@ barplot(IBUMedians[,1],main ="International Bitterness Units by State", horiz = 
 ###5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
 
 ```r
-MaxABVState<-ddply(Stage2, .(State), summarise, MaxABVState = max(ABV, na.rm=TRUE))
-MaxABVState<-MaxABVState[order(MaxABVState$MaxABVState),]
-head(MaxABVState,1)
+MaxABVState <- ddply(Stage2, .(State), summarise, MaxABVState = max(ABV, na.rm = TRUE))
+MaxABVState <- MaxABVState[order(MaxABVState$MaxABVState), ]
+head(MaxABVState, 1)
 ```
 
 ```
@@ -341,9 +341,10 @@ summary(Stage2$ABV)
 ```
 
 ```r
-MaxIBUState<-ddply(Stage2, .(State), summarise, MaxIBUState = max(as.double(Stage2$IBU), na.rm=TRUE))
-MaxIBUState<-MaxIBUState[order(MaxIBUState$MaxIBUState),]
-head(MaxIBUState,1)
+MaxIBUState <- ddply(Stage2, .(State), summarise, MaxIBUState = max(as.double(Stage2$IBU), 
+    na.rm = TRUE))
+MaxIBUState <- MaxIBUState[order(MaxIBUState$MaxIBUState), ]
+head(MaxIBUState, 1)
 ```
 
 ```
