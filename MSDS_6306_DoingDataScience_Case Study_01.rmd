@@ -1,10 +1,16 @@
 ---
+
 title: "Beer Data Analysis"
 authors: "Daniel Davieau, Lakeitra Webb, Emil Ramos"
 date: "February 26, 2018"
+
+title: "Case Study_01_BeerDataAnalysis"
+date: "February 19, 2018"
+
 output:
   html_document:
-    keep_md: true
+    keep_md: yes
+authors: Daniel Davieau, Lakeitra Webb, Emil Ramos
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
@@ -33,6 +39,10 @@ Each subsequent section contains (in order) :
 rm(list=ls())
 library(ggplot2)
 library(readr)
+
+library(repmis)
+library(RCurl)
+
 library(bitops)
 library(plyr)
 ```
@@ -46,22 +56,41 @@ sessionInfo()
 
 --- 
 
+
 ###1. How many breweries are present in each state?
 
 #### Loading the Provided Data
 
 ```{r, tidy=TRUE}
 #Load Beers.csv
+
+### The Data Provided
+Load Beers.csv
+```{r, tidy=TRUE}
+
 RawBeerData <- read_csv("Input/RawDataFiles/Beers.csv")
 ```
 ```{r, tidy=TRUE}
 #Load Breweries.csv
 RawBreweryData <- read_csv("Input/RawDataFiles/Breweries.csv")
 ```
+
 #### Examining the Provided Data
 We examined the data using [OpenRefine](http://openrefine.org/) and other tools.  
 
 We identified some records in the data files that raised concerns. For example the record (110,"Woodstock Inn, Station & Brewery",North Woodstock, NH) could potentially cause parsing errors however using the readr package mitigated this.
+
+
+###1. How many breweries are present in each state?
+The record (110,"Woodstock Inn, Station & Brewery",North Woodstock, NH) was causing errors but readr fixed this.
+Identify the records:
+```{r}
+RawBreweryData[c(110, 111, 112),] #Identified erroneous records
+```
+```{r}
+Stage1BreweryData<- RawBreweryData
+Stage1BreweryData <-transform(Stage1BreweryData, State = as.character(State))
+```
 
 ```{r, tidy=TRUE}
 #Display the potentially troublesome records
@@ -144,8 +173,17 @@ The following graphs display the median alcohol content and international bitter
 ```{r, tidy=TRUE}
 #Display the Median ABV by State 
 par(las=2)
+
 barplot(ABVMedians[,1],main ="Median Alchohol Content by State", horiz = FALSE, col = 4)
 #Display the Median IBU by State 
+
+#par(mai=c(1.02,0.82,5,0.42))
+barplot(ABVMedians[,1],main ="Median Alchohol Content by State", horiz = TRUE, col = 4)
+```
+```{r}
+IBUMedians<-as.data.frame(tapply(Stage2$IBU, Stage2$State, getMedians))
+
+
 par(las=2)
 barplot(IBUMedians[,1],main ="International Bitterness Units by State", horiz = FALSE, col = 4)
 ```
@@ -156,7 +194,12 @@ barplot(IBUMedians[,1],main ="International Bitterness Units by State", horiz = 
 MaxABVState<-ddply(Stage2, .(State), summarise, MaxABVState = max(ABV, na.rm=TRUE)) 
 #Sort by ABV
 MaxABVState<-MaxABVState[order(MaxABVState$MaxABVState),]
+
 #get the maximum IBU by state. Excluding NA's
+
+head(MaxABVState,1)
+summary(Stage2$ABV)
+
 MaxIBUState<-ddply(Stage2, .(State), summarise, MaxIBUState = max(as.double(Stage2$IBU), na.rm=TRUE))
 #Sort by ABV
 MaxIBUState<-MaxIBUState[order(MaxIBUState$MaxIBUState),]
