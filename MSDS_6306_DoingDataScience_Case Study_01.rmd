@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 ```
 ## Introduction
 
-The purpose of this documentaton is to provide analysis answers to questions asked by you (the client) related to several different Beers and the Breweries that produce them. The Beers dataset contains a list of 2410 US craft beers and the Breweries dataset contains 558 US breweries. The datasets descriptions are as follows:
+The purpose of this documentaton is to provide a detailed breakdown related to several different Beers and the Breweries that produce them. The Beers dataset contains a list of 2410 US craft beers and the Breweries dataset contains 558 US breweries. The datasets descriptions are as follows:
 
 The Environment Information section describes the  software environment and repository location of the data files and code. You should refer to this information should you desire to reproduce this analysis. 
 
