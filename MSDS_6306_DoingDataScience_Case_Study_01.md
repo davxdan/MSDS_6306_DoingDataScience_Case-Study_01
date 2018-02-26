@@ -1,18 +1,11 @@
 ---
-
 title: "Beer Data Analysis"
 authors: "Daniel Davieau, Lakeitra Webb, Emil Ramos"
 date: "February 26, 2018"
-
-title: "Case Study_01_BeerDataAnalysis"
-date: "February 19, 2018"
-
 output:
   html_document:
-    keep_md: yes
-authors: Daniel Davieau, Lakeitra Webb, Emil Ramos
+    keep_md: true
 ---
-
 
 ## Introduction
 
@@ -26,29 +19,11 @@ Each subsequent section contains (in order) :
 
 * Methods we used to analyze the data you provided  
 
-Load Libraries
-
-```r
-rm(list = ls())
-library(ggplot2)
-library(readr)
-library(repmis)
-library(RCurl)
-```
-
-
 * The answer to the question  
-
 
 ---  
 
-##1. Environment Information  
-
-```r
-library(bitops)
-library(tidyverse)
-```
-
+## Environment Information  
 
 >  This code block clears the R environment and loads the libraries required to process the subsequent code.  
 
@@ -61,41 +36,6 @@ library(bitops)
 library(plyr)
 ```
 > This code block displays the hardware, software and thier versions.  
-
-
-
-```
-## -------------------------------------------------------------------------
-```
-
-```
-## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)
-```
-
-```
-## -------------------------------------------------------------------------
-```
-
-```
-## 
-## Attaching package: 'plyr'
-```
-
-```
-## The following objects are masked from 'package:dplyr':
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize
-```
-
-```
-## The following object is masked from 'package:purrr':
-## 
-##     compact
-```
-## Environment Information
 
 
 ```r
@@ -120,7 +60,6 @@ sessionInfo()
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-
 ## [1] plyr_1.8.4    bitops_1.0-6  readr_1.1.1   ggplot2_2.2.1
 ## 
 ## loaded via a namespace (and not attached):
@@ -133,46 +72,13 @@ sessionInfo()
 ## [25] scales_0.5.0     backports_1.1.2  pkgconfig_2.0.1
 ```
 
-##  [1] plyr_1.8.4      forcats_0.2.0   stringr_1.2.0   dplyr_0.7.4    
-##  [5] purrr_0.2.4     tidyr_0.7.2     tibble_1.4.2    tidyverse_1.2.1
-##  [9] RCurl_1.95-4.8  bitops_1.0-6    repmis_0.5      readr_1.1.1    
-## [13] ggplot2_2.2.1  
-## 
-## loaded via a namespace (and not attached):
-##  [1] reshape2_1.4.3      haven_1.1.1         lattice_0.20-35    
-##  [4] colorspace_1.3-2    htmltools_0.3.6     yaml_2.1.16        
-##  [7] rlang_0.1.6         R.oo_1.21.0         pillar_1.1.0       
-## [10] foreign_0.8-69      glue_1.2.0          R.utils_2.6.0      
-## [13] modelr_0.1.1        readxl_1.0.0        bindrcpp_0.2       
-## [16] R.cache_0.12.0      bindr_0.1           munsell_0.4.3      
-## [19] gtable_0.2.0        cellranger_1.1.0    rvest_0.3.2        
-## [22] R.methodsS3_1.7.1   psych_1.7.8         evaluate_0.10.1    
-## [25] knitr_1.17          parallel_3.4.3      broom_0.4.3        
-## [28] Rcpp_0.12.14        scales_0.5.0        backports_1.1.2    
-## [31] formatR_1.5         jsonlite_1.5        mnormt_1.5-5       
-## [34] hms_0.4.0           digest_0.6.13       stringi_1.1.6      
-## [37] grid_3.4.3          rprojroot_1.3-1     cli_1.0.0          
-## [40] tools_3.4.3         magrittr_1.5        lazyeval_0.2.1     
-## [43] crayon_1.3.4        pkgconfig_2.0.1     xml2_1.2.0         
-## [46] data.table_1.10.4-3 lubridate_1.7.2     rstudioapi_0.7     
-## [49] assertthat_0.2.0    rmarkdown_1.8       httr_1.3.1         
-## [52] R6_2.2.2            nlme_3.1-131.1      compiler_3.4.3
-```
-## Brewery Data Analysis
-
-
 [Link to the Github Repository Associated with this Study](https://github.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01)
 
 --- 
 
-
 ###1. How many breweries are present in each state?
 
 #### Loading the Provided Data
-
-
-### The Data Provided
-Load Beers.csv
 
 
 ```r
@@ -441,8 +347,7 @@ The following graphs display the median alcohol content and international bitter
 ```r
 # Display the Median ABV by State
 par(las = 2)
-# par(mai=c(1.02,0.82,5,0.42))
-barplot(ABVMedians[, 1], main = "Median Alchohol Content by State", horiz = TRUE, 
+barplot(ABVMedians[, 1], main = "Median Alchohol Content by State", horiz = FALSE, 
     col = 4)
 ```
 
@@ -510,7 +415,6 @@ summary(Stage2$ABV)
 
 ###7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot. You are welcome to use the ggplot2 library for graphs. Please ignore missing values in your analysis. Make your best judgment of a relationship and EXPLAIN your answer.
 
-
 >Answer 7
 
 The chart below indicates that there is possibly a relationship between the bitterness of the beer and its alcoholic content. We must emphasize the word possibly; we would need to know more about the samples before definitively stating there is a relationship. 
@@ -528,41 +432,6 @@ or
 p <- ggplot(Stage2, aes(Stage2$ABV, Stage2$IBU))
 p + geom_point(size = 1)
 ```
-
-```r
-p <- ggplot(Stage2, aes(Stage2$ABV, Stage2$IBU))
-p + geom_point(size = 1)
-```
-
-```
-## Warning: Removed 1005 rows containing missing values (geom_point).
-```
-
-![](MSDS_6306_DoingDataScience_Case_Study_01_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
-
->Formatting Samples  
-
-# Header 1   
-## Header 2   
-### THis is a header  
-#### Header 4   
-##### Header 5   
-###### Header 6  
-
---  
-
----  
-
-...  
-
-$A = \pi*r^{2}$  
-
-![](SampleImage.png)  
-
-***  
-
-> block quote  
-
 
 ```
 ## Warning: Removed 1005 rows containing missing values (geom_point).
