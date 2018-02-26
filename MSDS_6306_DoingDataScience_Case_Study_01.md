@@ -354,7 +354,8 @@ getMedians <- function(x) {
 ABVMedians <- as.data.frame(tapply(Stage2$ABV, Stage2$State, getMedians))
 
 par(las = 2)
-barplot(ABVMedians[, 1], main = "Median Alchohol Content by State", horiz = FALSE, 
+# par(mai=c(1.02,0.82,5,0.42))
+barplot(ABVMedians[, 1], main = "Median Alchohol Content by State", horiz = TRUE, 
     col = 4)
 ```
 
