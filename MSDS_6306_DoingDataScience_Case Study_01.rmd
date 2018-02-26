@@ -9,22 +9,43 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 ```
-Load Libraries
-```{r, eval=TRUE}
+## Introduction
+
+The purpose of this documentaton is to provide analysis answers to questions asked by you (the client) related to several different Beers and the Breweries that produce them.
+
+The Environment Information section describes the  software environment and repository location of the data files and code. You should refer to this information should you desire to reproduce this analysis. 
+
+Each subsequent section contains (in order) :  
+
+* A particular question you have asked  
+
+* Methods we used to analyze the data you provided  
+
+* The answer to the question  
+
+---  
+
+##1. Environment Information  
+
+>  This code block loads the libraries required to process the subsequent code.  
+
+```{r tidy=TRUE}
 rm(list=ls())
 library(ggplot2)
 library(readr)
-library(repmis)
-library(RCurl)
-
+#library(repmis)
+#library(RCurl)
 library(bitops)
-library(tidyverse)
+#library(tidyverse)
 library(plyr)
 ```
-## Environment Information
+> This code block displays the hardware, software and thier versions.  
+
 ```{r tidy=TRUE}
 sessionInfo()
 ```
+
+
 ## Brewery Data Analysis
 
 [Link to the Github Repository Associated with this Study](https://github.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01)

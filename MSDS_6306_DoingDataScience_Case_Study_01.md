@@ -7,126 +7,78 @@ output:
     keep_md: true
 ---
 
-Load Libraries
+##1 Introduction
+
+The purpose of this documentaton is to provide analysis answers to questions asked by you (the client) related to several different Beers and the Breweries that produce them.
+
+The Environment Information section describes the  software environment and repository location of the data files and code. You should refer to this information should you desire to reproduce this analysis. 
+
+Each subsequent section contains (in order) :  
+
+* A particular question you have asked  
+
+* Methods we used to analyze the data you provided  
+
+* The answer to the question  
+
+---  
+
+## Environment Information  
+
+>  This code block loads the libraries required to process the subsequent code.  
+
 
 ```r
-rm(list = ls())
+rm(list=ls())
 library(ggplot2)
 library(readr)
-library(repmis)
-library(RCurl)
-```
-
-```
-## Loading required package: bitops
-```
-
-```r
+#library(repmis)
+#library(RCurl)
 library(bitops)
-library(tidyverse)
-```
-
-```
-## -- Attaching packages --------------------------------------------------------------------------------------- tidyverse 1.2.1 --
-```
-
-```
-## v tibble  1.4.2     v dplyr   0.7.4
-## v tidyr   0.7.2     v stringr 1.2.0
-## v purrr   0.2.4     v forcats 0.2.0
-```
-
-```
-## -- Conflicts ------------------------------------------------------------------------------------------ tidyverse_conflicts() --
-## x tidyr::complete() masks RCurl::complete()
-## x dplyr::filter()   masks stats::filter()
-## x dplyr::lag()      masks stats::lag()
-```
-
-```r
+#library(tidyverse)
 library(plyr)
 ```
+> This code block displays the hardware, software and thier versions.  
 
-```
-## -------------------------------------------------------------------------
-```
-
-```
-## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)
-```
-
-```
-## -------------------------------------------------------------------------
-```
-
-```
-## 
-## Attaching package: 'plyr'
-```
-
-```
-## The following objects are masked from 'package:dplyr':
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize
-```
-
-```
-## The following object is masked from 'package:purrr':
-## 
-##     compact
-```
-## Environment Information
 
 ```r
 sessionInfo()
 ```
 
 ```
-## R version 3.4.3 (2017-11-30)
-## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows 10 x64 (build 16299)
+## R version 3.4.2 (2017-09-28)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 17.10
 ## 
 ## Matrix products: default
+## BLAS: /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
 ## 
 ## locale:
-## [1] LC_COLLATE=English_United States.1252 
-## [2] LC_CTYPE=English_United States.1252   
-## [3] LC_MONETARY=English_United States.1252
-## [4] LC_NUMERIC=C                          
-## [5] LC_TIME=English_United States.1252    
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] plyr_1.8.4      forcats_0.2.0   stringr_1.2.0   dplyr_0.7.4    
-##  [5] purrr_0.2.4     tidyr_0.7.2     tibble_1.4.2    tidyverse_1.2.1
-##  [9] RCurl_1.95-4.8  bitops_1.0-6    repmis_0.5      readr_1.1.1    
-## [13] ggplot2_2.2.1  
+## [1] plyr_1.8.4    bitops_1.0-6  readr_1.1.1   ggplot2_2.2.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] reshape2_1.4.3      haven_1.1.1         lattice_0.20-35    
-##  [4] colorspace_1.3-2    htmltools_0.3.6     yaml_2.1.16        
-##  [7] rlang_0.1.6         R.oo_1.21.0         pillar_1.1.0       
-## [10] foreign_0.8-69      glue_1.2.0          R.utils_2.6.0      
-## [13] modelr_0.1.1        readxl_1.0.0        bindrcpp_0.2       
-## [16] R.cache_0.12.0      bindr_0.1           munsell_0.4.3      
-## [19] gtable_0.2.0        cellranger_1.1.0    rvest_0.3.2        
-## [22] R.methodsS3_1.7.1   psych_1.7.8         evaluate_0.10.1    
-## [25] knitr_1.17          parallel_3.4.3      broom_0.4.3        
-## [28] Rcpp_0.12.14        scales_0.5.0        backports_1.1.2    
-## [31] formatR_1.5         jsonlite_1.5        mnormt_1.5-5       
-## [34] hms_0.4.0           digest_0.6.13       stringi_1.1.6      
-## [37] grid_3.4.3          rprojroot_1.3-1     cli_1.0.0          
-## [40] tools_3.4.3         magrittr_1.5        lazyeval_0.2.1     
-## [43] crayon_1.3.4        pkgconfig_2.0.1     xml2_1.2.0         
-## [46] data.table_1.10.4-3 lubridate_1.7.2     rstudioapi_0.7     
-## [49] assertthat_0.2.0    rmarkdown_1.8       httr_1.3.1         
-## [52] R6_2.2.2            nlme_3.1-131.1      compiler_3.4.3
+##  [1] Rcpp_0.12.15     knitr_1.20       magrittr_1.5     hms_0.4.1       
+##  [5] munsell_0.4.3    colorspace_1.3-2 R6_2.2.2         rlang_0.2.0     
+##  [9] stringr_1.3.0    tools_3.4.2      grid_3.4.2       gtable_0.2.0    
+## [13] htmltools_0.3.6  yaml_2.1.16      lazyeval_0.2.1   rprojroot_1.3-2 
+## [17] digest_0.6.15    tibble_1.4.2     evaluate_0.10.1  rmarkdown_1.8   
+## [21] stringi_1.1.6    compiler_3.4.2   pillar_1.2.0     scales_0.5.0    
+## [25] backports_1.1.2  pkgconfig_2.0.1
 ```
+
+
 ## Brewery Data Analysis
 
 [Link to the Github Repository Associated with this Study](https://github.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01)
@@ -173,7 +125,7 @@ The record (110,"Woodstock Inn, Station & Brewery",North Woodstock, NH) was caus
 Identify the records:
 
 ```r
-RawBreweryData[c(110, 111, 112), ]  #Identified erroneous records
+RawBreweryData[c(110, 111, 112),] #Identified erroneous records
 ```
 
 ```
@@ -186,13 +138,13 @@ RawBreweryData[c(110, 111, 112), ]  #Identified erroneous records
 ```
 
 ```r
-Stage1BreweryData <- RawBreweryData
-Stage1BreweryData <- transform(Stage1BreweryData, State = as.character(State))
+Stage1BreweryData<- RawBreweryData
+Stage1BreweryData <-transform(Stage1BreweryData, State = as.character(State))
 ```
 
 ```r
-CountBreweriesByState <- data.frame(Stage1BreweryData$State)
-summary(CountBreweriesByState, maxsum = 100)
+CountBreweriesByState<-data.frame(Stage1BreweryData$State)
+summary(CountBreweriesByState,maxsum=100)
 ```
 
 ```
@@ -252,9 +204,8 @@ summary(CountBreweriesByState, maxsum = 100)
 ###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
 
 ```r
-colnames(Stage1BreweryData) <- c("Brewery_id", "BreweryName", "City", "State")
-Stage2 <- merge(x = RawBeerData, y = Stage1BreweryData, by = c("Brewery_id"), 
-    all = FALSE)
+colnames(Stage1BreweryData) <- c("Brewery_id","BreweryName","City","State")
+Stage2<- merge(x= RawBeerData, y=Stage1BreweryData, by = c("Brewery_id"), all=FALSE)
 head(Stage2)
 ```
 
@@ -313,21 +264,19 @@ tail(Stage2)
 ###3. Report the number of NA’s in each column.
 
 ```r
-Brewery_id <- sum(is.na(Stage2$Brewery_id))
-Name <- sum(is.na(Stage2$Name))
-Beer_ID <- sum(is.na(Stage2$Beer_ID))
-ABV <- sum(is.na(Stage2$ABV))
-IBU <- sum(is.na(Stage2$IBU))
-Style <- sum(is.na(Stage2$Style))
-Ounces <- sum(is.na(Stage2$Ounces))
-BreweryName <- sum(is.na(Stage2$BreweryName))
-City <- sum(is.na(Stage2$City))
-State <- sum(is.na(Stage2$State))
-NASummary <- as.matrix(c(Brewery_id, Name, Beer_ID, ABV, IBU, Style, Ounces, 
-    BreweryName, City, State))
-colnames(NASummary) <- c("Count of NA's")
-rownames(NASummary) <- c("Brewery_id", "Name", "Beer_ID", "ABV", "IBU", "Style", 
-    "Ounces", "BreweryName", "City", "State")
+Brewery_id<-sum(is.na(Stage2$Brewery_id))
+Name<-sum(is.na(Stage2$Name))
+Beer_ID<-sum(is.na(Stage2$Beer_ID))
+ABV<-sum(is.na(Stage2$ABV))
+IBU<-sum(is.na(Stage2$IBU))
+Style<-sum(is.na(Stage2$Style))
+Ounces<-sum(is.na(Stage2$Ounces))
+BreweryName<-sum(is.na(Stage2$BreweryName))
+City<-sum(is.na(Stage2$City))
+State<-sum(is.na(Stage2$State))
+NASummary<-as.matrix(c(Brewery_id, Name, Beer_ID, ABV, IBU, Style, Ounces, BreweryName, City, State))
+colnames(NASummary)<-c("Count of NA's")
+rownames(NASummary) <- c("Brewery_id", "Name", "Beer_ID", "ABV", "IBU", "Style", "Ounces", "BreweryName", "City", "State")
 NASummary
 ```
 
@@ -348,24 +297,23 @@ NASummary
 ###4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare.
 
 ```r
-getMedians <- function(x) {
-    c(median = median(x, na.rm = TRUE))
-}
-ABVMedians <- as.data.frame(tapply(Stage2$ABV, Stage2$State, getMedians))
+  getMedians <- function(x)
+  {
+  c(median = median(x,na.rm=TRUE ))
+  }
+ABVMedians<-as.data.frame(tapply(Stage2$ABV, Stage2$State, getMedians))
 
-par(las = 2)
-barplot(ABVMedians[, 1], main = "Median Alchohol Content by State", horiz = FALSE, 
-    col = 4)
+par(las=2)
+barplot(ABVMedians[,1],main ="Median Alchohol Content by State", horiz = FALSE, col = 4)
 ```
 
 ![](MSDS_6306_DoingDataScience_Case_Study_01_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 ```r
-IBUMedians <- as.data.frame(tapply(Stage2$IBU, Stage2$State, getMedians))
+IBUMedians<-as.data.frame(tapply(Stage2$IBU, Stage2$State, getMedians))
 
-par(las = 2)
-barplot(IBUMedians[, 1], main = "International Bitterness Units by State", horiz = FALSE, 
-    col = 4)
+par(las=2)
+barplot(IBUMedians[,1],main ="International Bitterness Units by State", horiz = FALSE, col = 4)
 ```
 
 ![](MSDS_6306_DoingDataScience_Case_Study_01_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
@@ -373,9 +321,9 @@ barplot(IBUMedians[, 1], main = "International Bitterness Units by State", horiz
 ###5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
 
 ```r
-MaxABVState <- ddply(Stage2, .(State), summarise, MaxABVState = max(ABV, na.rm = TRUE))
-MaxABVState <- MaxABVState[order(MaxABVState$MaxABVState), ]
-head(MaxABVState, 1)
+MaxABVState<-ddply(Stage2, .(State), summarise, MaxABVState = max(ABV, na.rm=TRUE))
+MaxABVState<-MaxABVState[order(MaxABVState$MaxABVState),]
+head(MaxABVState,1)
 ```
 
 ```
@@ -393,10 +341,9 @@ summary(Stage2$ABV)
 ```
 
 ```r
-MaxIBUState <- ddply(Stage2, .(State), summarise, MaxIBUState = max(as.double(Stage2$IBU), 
-    na.rm = TRUE))
-MaxIBUState <- MaxIBUState[order(MaxIBUState$MaxIBUState), ]
-head(MaxIBUState, 1)
+MaxIBUState<-ddply(Stage2, .(State), summarise, MaxIBUState = max(as.double(Stage2$IBU), na.rm=TRUE))
+MaxIBUState<-MaxIBUState[order(MaxIBUState$MaxIBUState),]
+head(MaxIBUState,1)
 ```
 
 ```
