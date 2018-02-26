@@ -79,6 +79,7 @@ The count of Breweries by state are listed below:
 summary(CountBreweriesByState,maxsum=100)
 ```
 ###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
+
 First, we needed to adjust the column names so we can successfully merge the brewery data with the beers data. The new column is titled, "Brewery_id."
 ```{r}
 #Adjust the column names so we can merge brewery data with beers data on "Brewery_id".
