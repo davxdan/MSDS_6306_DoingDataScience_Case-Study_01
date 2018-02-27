@@ -9,7 +9,7 @@ output:
 
 ## Introduction
 
-The purpose of this documentaton is to provide analysis answers to questions asked by you (the client) related to several different Beers and the Breweries that produce them.
+The purpose of this documentaton is to provide a detailed breakdown related to several different Beers and the Breweries that produce them. The Beers dataset contains a list of 2410 US craft beers and the Breweries dataset contains 558 US breweries. The datasets descriptions are as follows:
 
 The Environment Information section describes the  software environment and repository location of the data files and code. You should refer to this information should you desire to reproduce this analysis. 
 
@@ -63,12 +63,12 @@ sessionInfo()
 ## [1] plyr_1.8.4    bitops_1.0-6  readr_1.1.1   ggplot2_2.2.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.14     knitr_1.17       magrittr_1.5     hms_0.4.0       
+##  [1] Rcpp_0.12.14     knitr_1.18       magrittr_1.5     hms_0.4.1       
 ##  [5] munsell_0.4.3    colorspace_1.3-2 R6_2.2.2         rlang_0.1.6     
 ##  [9] stringr_1.2.0    tools_3.4.3      grid_3.4.3       gtable_0.2.0    
-## [13] htmltools_0.3.6  yaml_2.1.16      lazyeval_0.2.1   rprojroot_1.3-1 
-## [17] digest_0.6.13    tibble_1.4.2     formatR_1.5      evaluate_0.10.1 
-## [21] rmarkdown_1.8    stringi_1.1.6    compiler_3.4.3   pillar_1.1.0    
+## [13] htmltools_0.3.6  yaml_2.1.16      lazyeval_0.2.1   rprojroot_1.3-2 
+## [17] digest_0.6.13    tibble_1.4.1     formatR_1.5      evaluate_0.10.1 
+## [21] rmarkdown_1.8    stringi_1.1.6    compiler_3.4.3   pillar_1.0.1    
 ## [25] scales_0.5.0     backports_1.1.2  pkgconfig_2.0.1
 ```
 
@@ -76,7 +76,7 @@ sessionInfo()
 
 --- 
 
-###1. How many breweries are present in each state?
+### 1. How many breweries are present in each state?
 
 #### Loading the Provided Data
 
@@ -207,6 +207,8 @@ summary(CountBreweriesByState, maxsum = 100)
 ```
 ###2. Merge beer data with the breweries data. Print the ﬁrst 6 observations and the last six observations to check the merged ﬁle.
 
+First, we needed to adjust the column names so we can successfully merge the brewery data with the beers data. The new column is titled, "Brewery_id."
+
 ```r
 # Adjust the column names so we can merge brewery data with beers data on
 # 'Brewery_id'.
@@ -278,6 +280,8 @@ tail(Stage2)
 ```
 
 ###3. Report the number of NA’s in each column.
+
+In order to summarize the amount of NA's in each column, we needed to create each variable. Once each were created, we were able to summarize a breakdown by column.
 
 ```r
 # Store the count of NA's in each data field in a variable
