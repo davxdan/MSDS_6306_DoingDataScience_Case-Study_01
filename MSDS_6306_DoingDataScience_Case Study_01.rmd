@@ -98,6 +98,8 @@ tail(Stage2)
 ```
 
 ###3. Report the number of NA’s in each column.
+
+In order to summarize the amount of NA's in each column, we needed to create each variable. Once each were created, we were able to summarize a breakdown by column.
 ```{r, tidy=TRUE}
 #Store the count of NA's in each data field in a variable
 Brewery_id<-sum(is.na(Stage2$Brewery_id)) 
