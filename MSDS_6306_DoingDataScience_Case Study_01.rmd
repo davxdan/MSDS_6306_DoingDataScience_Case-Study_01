@@ -9,6 +9,8 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 ```
+## "Daniel Davieau, Lakeitra Webb, Emil Ramos"
+
 ## Introduction
 
 The purpose of this documentaton is to provide a detailed breakdown related to several different Beers and the Breweries that produce them. The Beers dataset contains a list of 2410 US craft beers and the Breweries dataset contains 558 US breweries. The datasets descriptions are as follows:
