@@ -46,7 +46,7 @@ sessionInfo()
 
 --- 
 
-###1. How many breweries are present in each state?
+### 1. How many breweries are present in each state?
 
 #### Loading the Provided Data
 
