@@ -32,7 +32,7 @@ Each subsequent section contains (in order) :
 
 
 ```r
-rm(list = ls())
+rm(list=ls())
 library(ggplot2)
 library(readr)
 library(bitops)
@@ -68,6 +68,7 @@ sessionInfo()
 ## [5] ggplot2_2.2.1 
 ## 
 ## loaded via a namespace (and not attached):
+<<<<<<< HEAD
 ##  [1] Rcpp_0.12.14     knitr_1.17       magrittr_1.5     hms_0.4.0       
 ##  [5] munsell_0.4.3    colorspace_1.3-2 R6_2.2.2         rlang_0.1.6     
 ##  [9] stringr_1.2.0    tools_3.4.3      grid_3.4.3       gtable_0.2.0    
@@ -75,6 +76,15 @@ sessionInfo()
 ## [17] rprojroot_1.3-1  digest_0.6.13    tibble_1.4.2     formatR_1.5     
 ## [21] evaluate_0.10.1  rmarkdown_1.8    stringi_1.1.6    compiler_3.4.3  
 ## [25] pillar_1.1.0     scales_0.5.0     backports_1.1.2  pkgconfig_2.0.1
+=======
+##  [1] Rcpp_0.12.15     knitr_1.20       magrittr_1.5     hms_0.4.1       
+##  [5] munsell_0.4.3    colorspace_1.3-2 R6_2.2.2         rlang_0.2.0     
+##  [9] stringr_1.3.0    tools_3.4.3      grid_3.4.3       gtable_0.2.0    
+## [13] htmltools_0.3.6  yaml_2.1.17      lazyeval_0.2.1   rprojroot_1.3-2 
+## [17] digest_0.6.15    tibble_1.4.2     evaluate_0.10.1  rmarkdown_1.8   
+## [21] stringi_1.1.6    compiler_3.4.3   pillar_1.2.1     scales_0.5.0    
+## [25] backports_1.1.2  pkgconfig_2.0.1
+>>>>>>> 6dd24ff83f966ceae78a5ae1db9ec41431db1526
 ```
 
 [Link to the Github Repository Associated with this Study](https://github.com/davxdan/MSDS_6306_DoingDataScience_Case-Study_01)
@@ -87,7 +97,7 @@ sessionInfo()
 
 
 ```r
-# Load Beers.csv
+#Load Beers.csv
 RawBeerData <- read_csv("Input/RawDataFiles/Beers.csv")
 ```
 
@@ -105,7 +115,7 @@ RawBeerData <- read_csv("Input/RawDataFiles/Beers.csv")
 ```
 
 ```r
-# Load Breweries.csv
+#Load Breweries.csv
 RawBreweryData <- read_csv("Input/RawDataFiles/Breweries.csv")
 ```
 
@@ -125,8 +135,8 @@ We identified some records in the data files that raised concerns. For example t
 
 
 ```r
-# Display the potentially troublesome records
-RawBreweryData[c(110, 111, 112), ]
+#Display the potentially troublesome records
+RawBreweryData[c(110, 111, 112),]
 ```
 
 ```
@@ -139,21 +149,18 @@ RawBreweryData[c(110, 111, 112), ]
 ```
 
 ```r
-# Load the raw data into a working dataframe. We want to preserve the raw
-# data just in case we need it later.
-Stage1BreweryData <- RawBreweryData
-# Convert the State column to character and isolate it so we can summarise
-# it to get the counts by state. There are other ways to do this but this
-# was simplest.
-Stage1BreweryData <- transform(Stage1BreweryData, State = as.character(State))
-CountBreweriesByState <- data.frame(Stage1BreweryData$State)
+#Load the raw data into a working dataframe. We want to preserve the raw data just in case we need it later.
+Stage1BreweryData<- RawBreweryData 
+#Convert the State column to character and isolate it so we can summarise it to get the counts by state. There are other ways to do this but this was simplest.
+Stage1BreweryData <-transform(Stage1BreweryData, State = as.character(State)) 
+CountBreweriesByState<-data.frame(Stage1BreweryData$State)
 ```
 > Answer 1  
 
 The count of Breweries by state are listed below:
 
 ```r
-summary(CountBreweriesByState, maxsum = 100)
+summary(CountBreweriesByState,maxsum=100)
 ```
 
 ```
@@ -215,19 +222,17 @@ summary(CountBreweriesByState, maxsum = 100)
 First, we needed to adjust the column names so we can successfully merge the brewery data with the beers data. The new column is titled, "Brewery_id."
 
 ```r
-# Adjust the column names so we can merge brewery data with beers data on
-# 'Brewery_id'.
-colnames(Stage1BreweryData) <- c("Brewery_id", "BreweryName", "City", "State")
-# Merge the data
-Stage2 <- merge(x = RawBeerData, y = Stage1BreweryData, by = c("Brewery_id"), 
-    all = FALSE)
+#Adjust the column names so we can merge brewery data with beers data on "Brewery_id".
+colnames(Stage1BreweryData) <- c("Brewery_id","BreweryName","City","State") 
+#Merge the data
+Stage2<- merge(x= RawBeerData, y=Stage1BreweryData, by = c("Brewery_id"), all=FALSE) 
 ```
 > Answer 2  
 
 Below are the first and last six records of the resulting joined data:  
 
 ```r
-# display the first 6 rows
+#display the first 6 rows
 head(Stage2)
 ```
 
@@ -256,7 +261,7 @@ head(Stage2)
 ```
 
 ```r
-# display the last 6 rows
+#display the last 6 rows
 tail(Stage2)
 ```
 
@@ -289,32 +294,30 @@ tail(Stage2)
 In order to summarize the amount of NA's in each column, we needed to create each variable. Once each were created, we were able to summarize a breakdown by column.
 
 ```r
-# Store the count of NA's in each data field in a variable
-Brewery_id <- sum(is.na(Stage2$Brewery_id))
-Name <- sum(is.na(Stage2$Name))
-Beer_ID <- sum(is.na(Stage2$Beer_ID))
-ABV <- sum(is.na(Stage2$ABV))
-IBU <- sum(is.na(Stage2$IBU))
-Style <- sum(is.na(Stage2$Style))
-Ounces <- sum(is.na(Stage2$Ounces))
-BreweryName <- sum(is.na(Stage2$BreweryName))
-City <- sum(is.na(Stage2$City))
-State <- sum(is.na(Stage2$State))
-# Store the individual counts of NA's in a Matrix
-NASummary <- as.matrix(c(Brewery_id, Name, Beer_ID, ABV, IBU, Style, Ounces, 
-    BreweryName, City, State))
-# Name the column
-colnames(NASummary) <- c("Count of NA's")
-# Name the rows
-rownames(NASummary) <- c("Brewery_id", "Name", "Beer_ID", "ABV", "IBU", "Style", 
-    "Ounces", "BreweryName", "City", "State")
+#Store the count of NA's in each data field in a variable
+Brewery_id<-sum(is.na(Stage2$Brewery_id)) 
+Name<-sum(is.na(Stage2$Name))
+Beer_ID<-sum(is.na(Stage2$Beer_ID))
+ABV<-sum(is.na(Stage2$ABV))
+IBU<-sum(is.na(Stage2$IBU))
+Style<-sum(is.na(Stage2$Style))
+Ounces<-sum(is.na(Stage2$Ounces))
+BreweryName<-sum(is.na(Stage2$BreweryName))
+City<-sum(is.na(Stage2$City))
+State<-sum(is.na(Stage2$State))
+#Store the individual counts of NA's in a Matrix
+NASummary<-as.matrix(c(Brewery_id, Name, Beer_ID, ABV, IBU, Style, Ounces, BreweryName, City, State))
+#Name the column 
+colnames(NASummary)<-c("Count of NA's")
+#Name the rows
+rownames(NASummary) <- c("Brewery_id", "Name", "Beer_ID", "ABV", "IBU", "Style", "Ounces", "BreweryName", "City", "State")
 ```
 > Answer 3  
 
 The count of NA's for each column are displayed below
 
 ```r
-# Display the data
+#Display the data
 NASummary
 ```
 
@@ -335,16 +338,15 @@ NASummary
 ###4. Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare.
 
 ```r
-# Create a function to get the medians
-getMedians <- function(x) {
-    c(median = median(x, na.rm = TRUE))
-}
-# Create a dataframe and call the function to get ABV medians and store
-# results in it
-ABVMedians <- as.data.frame(tapply(Stage2$ABV, Stage2$State, getMedians))
-# Create a dataframe and call the function to get IBU medians and store
-# results in it
-IBUMedians <- as.data.frame(tapply(Stage2$IBU, Stage2$State, getMedians))
+#Create a function to get the medians
+  getMedians <- function(x)
+  {
+  c(median = median(x,na.rm=TRUE ))
+  }
+#Create a dataframe and call the function to get ABV medians and store results in it
+ABVMedians<-as.data.frame(tapply(Stage2$ABV, Stage2$State, getMedians))
+#Create a dataframe and call the function to get IBU medians and store results in it
+IBUMedians<-as.data.frame(tapply(Stage2$IBU, Stage2$State, getMedians))
 ```
 >Answer 4  
 
@@ -354,19 +356,17 @@ The following graphs display the median alcohol content and international bitter
 
 
 ```r
-# Display the Median ABV by State
-par(las = 2)
-barplot(ABVMedians[, 1], main = "Median Alchohol Content by State", horiz = FALSE, 
-    col = 4)
+#Display the Median ABV by State 
+par(las=2)
+barplot(ABVMedians[,1],main ="Median Alchohol Content by State", horiz = FALSE, col = 4)
 ```
 
 ![](MSDS_6306_DoingDataScience_Case_Study_01_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 ```r
-# Display the Median IBU by State
-par(las = 2)
-barplot(IBUMedians[, 1], main = "International Bitterness Units by State", horiz = FALSE, 
-    col = 4)
+#Display the Median IBU by State 
+par(las=2)
+barplot(IBUMedians[,1],main ="International Bitterness Units by State", horiz = FALSE, col = 4)
 ```
 
 ![](MSDS_6306_DoingDataScience_Case_Study_01_files/figure-html/unnamed-chunk-12-2.png)<!-- -->
@@ -374,15 +374,14 @@ barplot(IBUMedians[, 1], main = "International Bitterness Units by State", horiz
 ###5. Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
 
 ```r
-# get the maximum ABV by state. Excluding NA's
-MaxABVState <- ddply(Stage2, .(State), summarise, MaxABVState = max(ABV, na.rm = TRUE))
-# Sort by ABV
-MaxABVState <- MaxABVState[order(MaxABVState$MaxABVState), ]
-# get the maximum IBU by state. Excluding NA's
-MaxIBUState <- ddply(Stage2, .(State), summarise, MaxIBUState = max(as.double(Stage2$IBU), 
-    na.rm = TRUE))
-# Sort by ABV
-MaxIBUState <- MaxIBUState[order(MaxIBUState$MaxIBUState), ]
+#get the maximum ABV by state. Excluding NA's
+MaxABVState<-ddply(Stage2, .(State), summarise, MaxABVState = max(ABV, na.rm=TRUE)) 
+#Sort by ABV
+MaxABVState<-MaxABVState[order(MaxABVState$MaxABVState),]
+#get the maximum IBU by state. Excluding NA's
+MaxIBUState<-ddply(Stage2, .(State), summarise, MaxIBUState = max(as.double(Stage2$IBU), na.rm=TRUE))
+#Sort by ABV
+MaxIBUState<-MaxIBUState[order(MaxIBUState$MaxIBUState),]
 ```
 >Answer 5  
 
@@ -391,7 +390,7 @@ The state with the highest international bitterness units is Arkansas with  $IBU
 * Note: we excluded records that had no alchohol by volume and international bitterness unit values in the data provided
 
 ```r
-head(MaxABVState, 1)
+head(MaxABVState,1)
 ```
 
 ```
@@ -400,7 +399,7 @@ head(MaxABVState, 1)
 ```
 
 ```r
-head(MaxIBUState, 1)
+head(MaxIBUState,1)
 ```
 
 ```
