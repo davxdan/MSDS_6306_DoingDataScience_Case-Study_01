@@ -38,6 +38,7 @@ library(ggplot2)
 library(readr)
 library(bitops)
 library(plyr)
+library(ggthemes)
 ```
 > This code block displays the hardware, software and thier versions.  
 
@@ -202,6 +203,7 @@ or
 
 ```{r}
 p <- ggplot(Stage2, aes(Stage2$ABV, Stage2$IBU))
-p + geom_point(size = 1)
+p + geom_point(size = 1) 
+
 ```
 
